@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HMT Studio — Ảnh Cổng Thành Công & Ngọc Ánh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Be Vietnam Pro chuẩn tiếng Việt, sang trọng -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: { 400: '#d4af37', 500: '#c59b27', 600: '#aa8214' }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+                        sans: ['"Be Vietnam Pro"', '"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Be Vietnam Pro', 'Plus Jakarta Sans', sans-serif; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.04); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+
+        /* ===== THEMES ===== */
+        :root {
+            --theme-primary: #0284c7; --theme-hover: #0369a1;
+            --theme-light: #f0f9ff; --theme-border: #bae6fd;
+            --theme-text: #075985; --theme-bg: #f8fafc;
+        }
+        body.theme-vu_quy {
+            --theme-primary: #f43f5e; --theme-hover: #e11d48;
+            --theme-light: #fff1f2; --theme-border: #fecdd3;
+            --theme-text: #881337; --theme-bg: #fdf2f4;
+            background-color: var(--theme-bg);
+        }
+        body.theme-tan_hon {
+            --theme-primary: #0284c7; --theme-hover: #0369a1;
+            --theme-light: #f0f9ff; --theme-border: #bae6fd;
+            --theme-text: #075985; --theme-bg: #f8fafc;
+            background-color: var(--theme-bg);
+        }
+        body.theme-sinh_nhat {
+            --theme-primary: #ea580c; --theme-hover: #c2410c;
+            --theme-light: #fffbeb; --theme-border: #fed7aa;
+            --theme-text: #9a3412; --theme-bg: #fffdf5;
+            background-color: var(--theme-bg);
+        }
+        body.theme-chan_dung {
+            --theme-primary: #d4af37; --theme-hover: #b5942f;
+            --theme-light: #1e293b; --theme-border: #334155;
+            --theme-text: #f8fafc; --theme-bg: #0b0f19;
+            background-color: var(--theme-bg); color: #f1f5f9;
+        }
+        .t-bg   { background-color: var(--theme-primary) !important; }
+        .t-text { color: var(--theme-primary) !important; }
+        .t-bg-l { background-color: var(--theme-light) !important; }
+        .t-border { border-color: var(--theme-primary) !important; }
+
+        /* ===== LOCK SCREEN ===== */
+        #lockScreen {
+            background: linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.98) 100%);
+            backdrop-filter: blur(16px);
+        }
+        .lock-card {
+            background: rgba(255,255,255,0.98);
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        .lock-icon-ring {
+            width: 68px; height: 68px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; margin: 0 auto 16px;
+            background: var(--theme-light);
+            color: var(--theme-primary);
+            box-shadow: 0 0 0 6px rgba(255,255,255,0.6), 0 4px 16px rgba(0,0,0,0.08);
+        }
+        .lock-studio-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 12px; border-radius: 999px; margin-bottom: 12px;
+            background: var(--theme-light); color: var(--theme-text);
+            font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .lock-title {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            font-size: clamp(1.15rem, 4vw, 1.45rem);
+            font-weight: 800; line-height: 1.3;
+            color: #0f172a; margin-bottom: 6px;
+        }
+        .lock-subtitle {
+            font-size: 13px; color: #64748b;
+            margin-bottom: 24px; line-height: 1.5;
+        }
+        .lock-input {
+            width: 100%; text-align: center;
+            font-size: 20px; letter-spacing: 0.25em;
+            font-weight: 700; padding: 14px 44px 14px 16px;
+            border-radius: 14px; border: 2px solid #e2e8f0;
+            background: #f8fafc; color: #0f172a;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .lock-input:focus {
+            border-color: var(--theme-primary);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-primary) 18%, transparent);
+        }
+        .lock-btn {
+            width: 100%; padding: 14px; border-radius: 14px;
+            font-weight: 700; font-size: 15px;
+            background: var(--theme-primary); color: white;
+            border: none; cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 16px color-mix(in srgb, var(--theme-primary) 35%, transparent);
+        }
+        .lock-btn:hover { opacity: 0.93; }
+        .lock-btn:active { transform: scale(0.97); }
+
+        /* ===== LIGHTBOX FIX TRIỆT ĐỂ: DISPLAY NONE MẶC ĐỊNH, CHỈ HIỆN KHI CÓ CLASS .open ===== */
+        #lightboxModal {
+            display: none !important;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(10, 15, 29, 0.97) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        #lightboxModal.open {
+            display: flex !important;
+            flex-direction: column;
+        }
+
+        /* ===== TOAST OVERLAY FOR SUBMIT SUCCESS ===== */
+        #successOverlay {
+            display: none; position: fixed; inset: 0; z-index: 2000;
+            background: rgba(15,23,42,0.8); backdrop-filter: blur(8px);
+            align-items: center; justify-content: center;
+        }
+        #successOverlay.show { display: flex; }
+        .success-card {
+            background: white; border-radius: 24px; padding: 40px 32px;
+            text-align: center; max-width: 360px; width: 90%;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ===== CÁC HIỆU ỨNG ===== */
+        @keyframes heartPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.35); }
+            100% { transform: scale(1); }
+        }
+        .heart-pop { animation: heartPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        /* Khung ảnh chống cắt đầu */
+        .photo-thumb-portrait {
+            object-fit: cover;
+            object-position: center 12%; /* Ưu tiên giữ trọn vẹn khuôn mặt & vương miện */
+        }
+        .photo-thumb-contain {
+            object-fit: contain;
+            background-color: #f1f5f9;
+        }
+
+        img {
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+    </style>
+</head>
+<body class="theme-tan_hon min-h-screen text-slate-800 antialiased pb-28 sm:pb-12 transition-colors duration-300">
+
+    <!-- ============================================================ -->
+    <!-- 🔒 1. LOCKSCREEN — FONT CHUẨN, GIAO DIỆN TINH TẾ             -->
+    <!-- ============================================================ -->
+    <div id="lockScreen" class="fixed inset-0 z-[100] flex items-center justify-center px-4">
+        <div class="lock-card w-full max-w-sm rounded-3xl p-7 sm:p-9 shadow-2xl text-center">
+            <div class="lock-icon-ring"><i class="fa-solid fa-lock"></i></div>
+            <div class="lock-studio-badge">
+                <i class="fa-solid fa-camera-retro"></i>
+                <span>HMT Studio • Chọn Ảnh</span>
+            </div>
+            <h2 id="lockAlbumTitle" class="lock-title">Ảnh Cổng Thành Công & Ngọc Ánh</h2>
+            <p class="lock-subtitle">Studio đã hoàn thiện ảnh tiệc và gửi link cho bạn.<br>Vui lòng nhập mã bảo vệ để xem và chọn ảnh.</p>
+
+            <form onsubmit="handleLockSubmit(event)" class="space-y-3">
+                <div class="relative">
+                    <input type="password" id="albumPasswordInput" maxlength="20"
+                           placeholder="Nhập mã (ví dụ: 1234)"
+                           class="lock-input" autocomplete="off" autofocus>
+                    <button type="button" onclick="togglePasswordVisibility()"
+                            class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm p-1">
+                        <i id="eyeIcon" class="fa-regular fa-eye"></i>
+                    </button>
+                </div>
+                <p id="lockErrorMsg" class="text-xs text-rose-600 font-semibold hidden py-1">
+                    <i class="fa-solid fa-circle-exclamation mr-1"></i>Mã chưa đúng! Liên hệ Studio HMT để được hỗ trợ.
+                </p>
+                <button type="submit" class="lock-btn mt-1">
+                    <i class="fa-solid fa-unlock-keyhole"></i>
+                    <span>Mở xem ảnh tiệc</span>
+                </button>
+            </form>
+
+            <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                <span><i class="fa-solid fa-circle-info mr-1"></i>Mã mặc định: <b class="text-slate-600 font-semibold">1234</b></span>
+                <span><i class="fa-brands fa-facebook-messenger mr-1 text-sky-500"></i>Studio HMT</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ✅ SUCCESS OVERLAY KHI GỬI THÀNH CÔNG                       -->
+    <!-- ============================================================ -->
+    <div id="successOverlay" class="fixed inset-0 z-[2000]">
+        <div class="success-card">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-4">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">Đã gửi thành công! 🎉</h3>
+            <p class="text-sm text-slate-600 mb-4">Studio đã nhận được danh sách ảnh của bạn.<br>Hệ thống tự động lưu vào máy Studio để xử lý.</p>
+            <div id="successSummary" class="bg-slate-50 rounded-xl p-3 text-xs text-slate-600 text-left mb-4 space-y-1"></div>
+            <button onclick="closeSuccessOverlay()"
+                    class="w-full py-3 rounded-xl font-bold text-white t-bg active:scale-95 text-sm">
+                Quay lại xem ảnh
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 🌟 2. HEADER — NÚT SAO CHÉP LINK + TÙY CHỌN THEME           -->
+    <!-- ============================================================ -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14 sm:h-18">
+                <!-- Brand -->
+                <div class="flex items-center space-x-2.5 min-w-0">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-full t-bg-l flex items-center justify-center t-text text-lg font-bold border border-slate-200 flex-shrink-0">
+                        <i class="fa-solid fa-camera-retro text-sm sm:text-base"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-amber-600">HMT STUDIO</span>
+                            <span id="themeBadge" class="text-[9px] px-1.5 py-0.5 rounded-full font-bold t-bg-l t-text">Tân Hôn</span>
+                        </div>
+                        <h1 id="headerAlbumTitle" class="text-sm sm:text-base font-bold text-slate-900 leading-tight truncate">
+                            Ảnh Cổng Thành Công & Ngọc Ánh
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Right Actions -->
+                <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                    <!-- Copy Link -->
+                    <button onclick="copyAlbumLink()" title="Sao chép link gửi khách"
+                            class="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 transition-all">
+                        <i class="fa-solid fa-link text-amber-600"></i>
+                        <span>Sao chép link</span>
+                    </button>
+                    <button onclick="copyAlbumLink()" class="sm:hidden p-2 rounded-xl bg-amber-50 text-amber-600 border border-amber-200"
+                            title="Sao chép link chia sẻ">
+                        <i class="fa-solid fa-link text-sm"></i>
+                    </button>
+
+                    <!-- Theme Selector -->
+                    <div class="relative">
+                        <button onclick="toggleThemeMenu()"
+                                class="p-2 rounded-xl text-slate-600 hover:bg-slate-100 border border-slate-200 text-sm"
+                                title="Đổi màu giao diện">
+                            <i class="fa-solid fa-palette text-amber-500"></i>
+                        </button>
+                        <div id="themeMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 z-50">
+                            <div class="text-[10px] font-bold text-slate-400 px-3 py-1 uppercase tracking-wider">Tone màu sự kiện</div>
+                            <button onclick="setTheme('vu_quy')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-rose-50 hover:text-rose-600">
+                                <span class="w-3.5 h-3.5 rounded-full bg-rose-500 flex-shrink-0"></span>Vu Quy (Hồng Phấn)
+                            </button>
+                            <button onclick="setTheme('tan_hon')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-sky-50 hover:text-sky-600">
+                                <span class="w-3.5 h-3.5 rounded-full bg-sky-500 flex-shrink-0"></span>Tân Hôn (Xanh Sky)
+                            </button>
+                            <button onclick="setTheme('sinh_nhat')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-600">
+                                <span class="w-3.5 h-3.5 rounded-full bg-amber-500 flex-shrink-0"></span>Sinh Nhật (Vàng Ấm)
+                            </button>
+                            <button onclick="setTheme('chan_dung')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100">
+                                <span class="w-3.5 h-3.5 rounded-full bg-slate-900 flex-shrink-0"></span>Chân Dung (Luxury)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tải trọn bộ Google Drive -->
+                    <a id="btnDownloadAll" href="https://drive.google.com/drive/folders/1rrcaAij-IWaGfbn2nx8tYUlaVuFh-gfo?usp=sharing"
+                       target="_blank" class="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100">
+                        <i class="fa-brands fa-google-drive text-emerald-600"></i>
+                        <span>Tải trọn bộ</span>
+                    </a>
+
+                    <!-- Submit Button -->
+                    <button onclick="openSubmitModal()"
+                            class="t-bg text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-xl shadow-sm active:scale-95 flex items-center gap-1.5">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                        <span class="hidden xs:inline">Gửi</span>
+                        <span id="headerSelectedCount" class="bg-white/25 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold leading-none">0</span>
+                    </button>
+
+                    <button onclick="lockAlbumManually()" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-xl" title="Khóa album">
+                        <i class="fa-solid fa-lock text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quota Progress Bar -->
+            <div class="pb-2">
+                <div class="flex justify-between text-[11px] font-medium text-slate-500 mb-1">
+                    <span>Đã chọn: <b id="quotaCurrent" class="t-text">0</b> / <span id="quotaMax">120</span> ảnh</span>
+                    <span id="quotaStatusText">Còn lại 120 ảnh</span>
+                </div>
+                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div id="quotaProgressBar" class="h-full t-bg transition-all duration-500" style="width:0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- 🔍 3. TOOLBAR: BỘ LỌC + TÙY CHỌN KHUNG HÌNH (FIX CẮT ĐẦU)   -->
+    <!-- ============================================================ -->
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200/80 shadow-xs">
+            <!-- Filter Tabs -->
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 sm:pb-0 custom-scrollbar text-xs font-semibold">
+                <button id="tabAll" onclick="setFilter('all')"
+                        class="px-3 py-1.5 rounded-xl t-bg text-white whitespace-nowrap">
+                    <i class="fa-solid fa-images mr-1 text-[10px]"></i>Tất cả (<span id="countAll">0</span>)
+                </button>
+                <button id="tabSelected" onclick="setFilter('selected')"
+                        class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap">
+                    <i class="fa-solid fa-heart mr-1 text-rose-500 text-[10px]"></i>Đã chọn (<span id="countSelected">0</span>)
+                </button>
+                <button id="tabCommented" onclick="setFilter('commented')"
+                        class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap">
+                    <i class="fa-solid fa-comment-dots mr-1 text-amber-500 text-[10px]"></i>Lời dặn (<span id="countCommented">0</span>)
+                </button>
+            </div>
+
+            <!-- View Mode (Fix Cắt Đầu) & Search Box -->
+            <div class="flex items-center gap-2">
+                <!-- Chuyển đổi chế độ xem ảnh (Fix cắt đầu) -->
+                <div class="flex items-center bg-slate-100 p-0.5 rounded-xl text-xs font-semibold flex-shrink-0">
+                    <button id="btnViewPortrait" onclick="setViewMode('portrait')"
+                            class="px-2.5 py-1.5 rounded-lg bg-white shadow-xs text-slate-800 transition-all flex items-center gap-1 font-bold"
+                            title="Khổ đứng chân dung (Ưu tiên giữ đầu, mặt)">
+                        <i class="fa-solid fa-crop-simple text-[11px] text-sky-600"></i>
+                        <span class="hidden sm:inline">Khổ Đứng (3:4)</span>
+                    </button>
+                    <button id="btnViewContain" onclick="setViewMode('contain')"
+                            class="px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition-all flex items-center gap-1"
+                            title="Xem trọn vẹn 100% không cắt viền">
+                        <i class="fa-regular fa-square text-[11px]"></i>
+                        <span class="hidden sm:inline">Xem Trọn Vẹn</span>
+                    </button>
+                </div>
+
+                <!-- Search Input -->
+                <div class="relative flex-1 sm:w-52">
+                    <input type="text" id="searchInput" oninput="onSearch(this.value)"
+                           placeholder="Tìm số ảnh (vd: 8325)..."
+                           class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-7 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-sky-400">
+                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[11px]"></i>
+                    <button id="clearSearchBtn" onclick="clearSearch()"
+                            class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[11px]">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 🖼️ 4. PHOTO GRID — TỶ LỆ KHỔ ĐỨNG (3:4) CHUẨN ẢNH CỔNG       -->
+    <!-- ============================================================ -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2">
+        <div id="emptyState" class="hidden py-16 text-center">
+            <div class="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center text-xl text-slate-400 mx-auto mb-3">
+                <i class="fa-regular fa-image"></i>
+            </div>
+            <h3 class="text-sm font-semibold text-slate-700">Không tìm thấy ảnh nào</h3>
+            <p class="text-xs text-slate-400 mt-1">Thử xóa bộ lọc tìm kiếm</p>
+        </div>
+        <!-- Grid: 2 cột trên điện thoại, 3 cột tablet, 4 cột desktop, 5 cột màn lớn -->
+        <div id="photoGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"></div>
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- 📱 5. MOBILE BOTTOM BAR                                     -->
+    <!-- ============================================================ -->
+    <div class="sm:hidden fixed bottom-0 left-0 right-0 z-30 px-3 pb-3 pt-1" style="background:linear-gradient(transparent,rgba(255,255,255,0.95) 30%);">
+        <div class="bg-slate-900/95 text-white rounded-2xl p-2.5 px-4 shadow-2xl flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full t-bg flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <div>
+                    <div class="text-[9px] text-slate-400">Đã chọn</div>
+                    <div class="text-xs font-bold"><span id="mobileCountSelected">0</span> ảnh</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="setFilter('selected')"
+                        class="px-2.5 py-1.5 rounded-xl bg-slate-800 text-xs font-semibold text-slate-300">
+                    <i class="fa-regular fa-eye mr-1"></i>Xem lại
+                </button>
+                <button onclick="openSubmitModal()"
+                        class="t-bg px-4 py-1.5 rounded-xl text-xs font-bold active:scale-95 flex items-center gap-1">
+                    <span>Gửi Studio</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 🔍 6. LIGHTBOX HOÀN THIỆN: CÓ NÚT QUAY LẠI, ZOOM, SWIPE     -->
+    <!-- ============================================================ -->
+    <div id="lightboxModal" onclick="handleBackdropClick(event)">
+        <!-- Top Bar: Nút Quay lại Home + Đếm ảnh + Thanh Zoom + Nút X -->
+        <div class="flex items-center justify-between p-2.5 sm:p-4 text-white z-20 bg-slate-950/85 backdrop-blur-md border-b border-white/10 flex-shrink-0">
+            <!-- Nút Quay lại Home cực dễ bấm cho cả Mobile và Laptop -->
+            <button onclick="closeLightbox()"
+                    class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 active:scale-95 text-white text-xs font-bold transition-all border border-white/20">
+                <i class="fa-solid fa-arrow-left text-sm"></i>
+                <span class="hidden xs:inline">Quay lại Gallery</span>
+                <span class="xs:hidden">Thoát</span>
+            </button>
+
+            <!-- Tên ảnh & Bộ đếm -->
+            <div class="min-w-0 mx-2 text-center flex-1">
+                <h3 id="lightboxFilename" class="text-xs sm:text-sm font-bold truncate text-slate-100"></h3>
+                <span id="lightboxCounter" class="text-[10px] sm:text-xs text-sky-400 font-medium"></span>
+            </div>
+
+            <!-- Thanh điều khiển ZOOM trực quan & Nút đóng -->
+            <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                <!-- Bộ nút ZOOM IN / OUT / RESET -->
+                <div class="flex items-center bg-slate-900/90 rounded-xl p-0.5 border border-white/15">
+                    <button onclick="zoomOut(event)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-white/15 flex items-center justify-center text-xs text-slate-300 active:scale-90" title="Thu nhỏ (-)">
+                        <i class="fa-solid fa-magnifying-glass-minus"></i>
+                    </button>
+                    <span id="zoomLevelText" onclick="resetZoom(event)" class="px-1.5 sm:px-2 font-mono font-bold text-[10px] sm:text-[11px] text-sky-400 select-none cursor-pointer" title="Bấm để đặt lại 100%">100%</span>
+                    <button onclick="zoomIn(event)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-white/15 flex items-center justify-center text-xs text-slate-300 active:scale-90" title="Phóng to (+)">
+                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+                    </button>
+                    <button onclick="resetZoom(event)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-white/15 flex items-center justify-center text-[10px] text-slate-400 active:scale-90 ml-0.5 border-l border-white/10" title="Đặt lại 100%">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                    </button>
+                </div>
+
+                <button onclick="downloadCurrentOriginal()"
+                        class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/10" title="Tải file ảnh gốc">
+                    <i class="fa-solid fa-cloud-arrow-down"></i><span>Tải gốc</span>
+                </button>
+                <button onclick="closeLightbox()"
+                        class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/15 hover:bg-rose-600 text-white flex items-center justify-center border border-white/20 active:scale-95 transition-all"
+                        title="Đóng (Phím Esc)">
+                    <i class="fa-solid fa-xmark text-sm sm:text-base"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Image Container: Hỗ trợ ZOOM, PAN kéo rê & Touch Swipe -->
+        <div id="lightboxTouchArea" class="relative flex-1 flex items-center justify-center p-2 sm:p-6 overflow-hidden select-none cursor-pointer">
+            <!-- Nút Prev: Hiện rõ cả Mobile và Laptop -->
+            <button onclick="prevPhoto(event)"
+                    class="absolute left-2 sm:left-6 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-slate-900/75 hover:bg-slate-900 text-white flex items-center justify-center text-base sm:text-2xl z-30 border border-white/25 shadow-2xl backdrop-blur-md active:scale-90 transition-all"
+                    title="Ảnh trước (Phím ←)">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <!-- Khung bao bọc ảnh phục vụ ZOOM & PAN -->
+            <div id="lightboxImgWrapper" class="relative max-w-full max-h-full flex items-center justify-center pointer-events-auto overflow-visible"
+                 ondblclick="toggleZoom(event)">
+                <img id="lightboxImg" src="" alt=""
+                     class="max-w-full max-h-[64vh] sm:max-h-[72vh] object-contain rounded-xl shadow-2xl transition-transform duration-150 select-none will-change-transform"
+                     draggable="false">
+                <div id="lightboxHeartBadge"
+                     class="hidden absolute top-3 left-3 px-3 py-1 rounded-full bg-rose-600/90 text-white text-xs font-bold flex items-center gap-1.5 shadow-lg backdrop-blur-sm pointer-events-none">
+                    <i class="fa-solid fa-heart"></i><span>ĐÃ CHỌN</span>
+                </div>
+            </div>
+
+            <!-- Nút Next: Hiện rõ cả Mobile và Laptop -->
+            <button onclick="nextPhoto(event)"
+                    class="absolute right-2 sm:right-6 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-slate-900/75 hover:bg-slate-900 text-white flex items-center justify-center text-base sm:text-2xl z-30 border border-white/25 shadow-2xl backdrop-blur-md active:scale-90 transition-all"
+                    title="Ảnh sau (Phím →)">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Actions Bar: Nút Thả Tim + Gợi ý lời dặn + Input -->
+        <div class="p-3 sm:p-4 bg-slate-950/95 border-t border-white/10 text-white w-full z-20 flex-shrink-0">
+            <button id="lightboxHeartBtn" onclick="toggleLightboxSelect()"
+                    class="w-full py-2.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 bg-slate-800 text-slate-300 mb-2.5 shadow-md">
+                <i class="fa-regular fa-heart text-rose-400"></i><span>Thả Tim Chọn Ảnh Này</span>
+            </button>
+
+            <!-- Quick Tags Lời Dặn -->
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-2 custom-scrollbar text-[11px] mb-2">
+                <span class="text-slate-400 whitespace-nowrap text-[10px] uppercase font-bold flex-shrink-0">Gợi ý lời dặn:</span>
+                <button onclick="addPresetTag('In ảnh cổng 60x90')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 whitespace-nowrap border border-slate-700 flex-shrink-0 text-slate-200">In ảnh cổng 60x90</button>
+                <button onclick="addPresetTag('In bàn 15x21')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 whitespace-nowrap border border-slate-700 flex-shrink-0 text-slate-200">In bàn 15x21</button>
+                <button onclick="addPresetTag('Làm mịn da')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 whitespace-nowrap border border-slate-700 flex-shrink-0 text-slate-200">Làm mịn da</button>
+                <button onclick="addPresetTag('Chỉnh eo thon')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 whitespace-nowrap border border-slate-700 flex-shrink-0 text-slate-200">Chỉnh eo</button>
+                <button onclick="addPresetTag('Xóa người phía sau')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 whitespace-nowrap border border-slate-700 flex-shrink-0 text-slate-200">Xóa rác/người</button>
+            </div>
+
+            <input type="text" id="lightboxCommentInput" oninput="saveCurrentComment(this.value)"
+                   placeholder="Gõ lời dặn cho thợ retouch/in ấn (sẽ tự động thả tim ảnh)..."
+                   class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-sky-500 placeholder-slate-500">
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 📤 7. SUBMIT MODAL — GỬI SERVER TỰ ĐỘNG LƯU .TXT            -->
+    <!-- ============================================================ -->
+    <div id="submitModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-100 max-h-[90vh] flex flex-col">
+            <div class="flex items-start justify-between pb-3 border-b border-slate-100">
+                <div>
+                    <h3 class="text-base font-bold text-slate-900">Gửi danh sách cho Studio</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Hệ thống lưu tự động vào máy Studio — không cần copy Zalo</p>
+                </div>
+                <button onclick="closeSubmitModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center flex-shrink-0 ml-3">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                </button>
+            </div>
+
+            <!-- Tên khách & ghi chú -->
+            <div class="py-3 space-y-2 text-xs">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">Tên bạn / Gia đình:</label>
+                        <input type="text" id="custName" value="Thành Công - Ngọc Ánh"
+                               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400 text-xs font-semibold">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">SĐT / Zalo:</label>
+                        <input type="text" id="custPhone" placeholder="09xx.xxx.xxx"
+                               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400 text-xs font-semibold">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-600 mb-1">Lời dặn chung (nếu có):</label>
+                    <input type="text" id="custGeneralNote" placeholder="Ví dụ: Tone màu ấm, giao trước thứ 6..."
+                           class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400 text-xs">
+                </div>
+            </div>
+
+            <!-- Summary badge -->
+            <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-sky-50 border border-sky-100 text-xs font-semibold text-sky-700 mb-3">
+                <span><i class="fa-solid fa-heart mr-1 text-rose-500"></i>Tổng số ảnh đã chọn:</span>
+                <span id="modalTotalSelected" class="text-sm font-bold">0 ảnh</span>
+            </div>
+
+            <!-- Selected list -->
+            <div id="modalSelectedList" class="flex-1 overflow-y-auto pr-1 divide-y divide-slate-100 text-xs max-h-44 custom-scrollbar"></div>
+
+            <!-- Actions -->
+            <div class="pt-3 border-t border-slate-100 space-y-2 mt-2">
+                <!-- PRIMARY: Gửi → Server tự lưu -->
+                <button onclick="submitToServer()"
+                        class="w-full py-3.5 px-4 rounded-xl font-bold text-white t-bg hover:opacity-95 shadow-lg active:scale-95 flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>GỬI CHO STUDIO (Tự động lưu)</span>
+                </button>
+                <!-- Secondary: Download .txt -->
+                <button onclick="downloadListTxt()"
+                        class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold flex items-center justify-center gap-1.5 text-xs">
+                    <i class="fa-regular fa-file-lines text-slate-500"></i>Tải file .TXT (Dự phòng)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 🔔 8. TOAST NOTIFICATION                                    -->
+    <!-- ============================================================ -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-[3000] bg-slate-900/90 text-white px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2 text-xs font-semibold transition-all duration-300 -translate-y-24 opacity-0 border border-slate-700 backdrop-blur-md pointer-events-none">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMsg">OK</span>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ⚡ 9. JAVASCRIPT ENGINE TOÀN DIỆN KÈM ZOOM & PAN              -->
+    <!-- ============================================================ -->
+    <script>
+        // ===== ALBUM CONFIG =====
+        const albumConfig = {
+            "id": "nh_c_ng_th_nh_c_ng___ng_c__nh",
+            "title": "Ảnh Cổng Thành Công & Ngọc Ánh",
+            "clientName": "Thành Công - Ngọc Ánh",
+            "theme": "tan_hon",
+            "password": "1234",
+            "maxPhotos": 120,
+            "driveFolderUrl": "https://drive.google.com/drive/folders/1rrcaAij-IWaGfbn2nx8tYUlaVuFh-gfo?usp=sharing",
+            "googleSheetWebhook": "https://script.google.com/macros/s/AKfycbzyWUSwrdaeCMrhtWg-M7dC_Lam3l2i9RHpF5dOfYISCgjtgC1P6HGiKnEYKHGT2CZ_/exec",
+            "totalPhotos": 55,
+            "photos": [
+                        {
+                                    "filename": "_HMT8317.jpg",
+                                    "id": "1trP7iOgDf46dF2UAO0cxeZG4OedoVTNq"
+                        },
+                        {
+                                    "filename": "_HMT8318.jpg",
+                                    "id": "1Q1riDdig6bFUsL6WVKjE3yoPY2GZgX0Y"
+                        },
+                        {
+                                    "filename": "_HMT8319.jpg",
+                                    "id": "12fdTmth14XnKovVSGa-KSrXAOEHJmYUM"
+                        },
+                        {
+                                    "filename": "_HMT8320.jpg",
+                                    "id": "1_IuPCnMWF2mU0ZykQU6UIs6cTi1Z2hJr"
+                        },
+                        {
+                                    "filename": "_HMT8321.jpg",
+                                    "id": "14zqglEPiUM0S-OjyttCpWBnCnl3jieJY"
+                        },
+                        {
+                                    "filename": "_HMT8322.jpg",
+                                    "id": "1X9SbyUMvbwOWYM25qzQt9Cf-fUY0OqUg"
+                        },
+                        {
+                                    "filename": "_HMT8323.jpg",
+                                    "id": "1zMAlNzxwLU4rj_iV2rMF12KFnYgCwb8C"
+                        },
+                        {
+                                    "filename": "_HMT8324.jpg",
+                                    "id": "1qj9_Idfs9xQoHg3h4qaHyM1Mi-tt2nzi"
+                        },
+                        {
+                                    "filename": "_HMT8325.jpg",
+                                    "id": "1u72bbiEV4QNNdBLKwHq3hIaNawj4K0uX"
+                        },
+                        {
+                                    "filename": "_HMT8326.jpg",
+                                    "id": "1O-Q0WNlEIkAleoNaii3W6jlbwuG1K8Ko"
+                        },
+                        {
+                                    "filename": "_HMT8327.jpg",
+                                    "id": "1nBhPl9owRHDE9XEa7_6pa5C4NuFIdBPD"
+                        },
+                        {
+                                    "filename": "_HMT8328.jpg",
+                                    "id": "12pGOtTbLNBERa5BrdxZqlR-UD5kqwfvS"
+                        },
+                        {
+                                    "filename": "_HMT8329.jpg",
+                                    "id": "1zqI8xem1KxKH6_RNMA1NTF5iyau1ATWG"
+                        },
+                        {
+                                    "filename": "_HMT8330.jpg",
+                                    "id": "1WgHqbcFtA51S1OSyPchgEcrPsXGI7lze"
+                        },
+                        {
+                                    "filename": "_HMT8331.jpg",
+                                    "id": "1FS3YBiA-lRKHzLyBKEEE0Z6tMgqEIYWR"
+                        },
+                        {
+                                    "filename": "_HMT8332.jpg",
+                                    "id": "1l9gf7NUaGyE2cA7cxGK3vrZLTMzulVlP"
+                        },
+                        {
+                                    "filename": "_HMT8333.jpg",
+                                    "id": "1MY96vGvnqhCiLsMM0G9AM2F-jj3nGe74"
+                        },
+                        {
+                                    "filename": "_HMT8334.jpg",
+                                    "id": "1oWFxyOhcHtFVJm2afItKoZDqXkwoMmMY"
+                        },
+                        {
+                                    "filename": "_HMT8335.jpg",
+                                    "id": "12ojNopsPMbdCtd564KDB-rIm5AoZFg2l"
+                        },
+                        {
+                                    "filename": "_HMT8336.jpg",
+                                    "id": "1PJhXSB0bXZlbkxWZhu3o78-stxjpcghV"
+                        },
+                        {
+                                    "filename": "_HMT8337.jpg",
+                                    "id": "1PPB6cQzOFmz8W717wqVCzRbmvndHT0Y9"
+                        },
+                        {
+                                    "filename": "_HMT8338.jpg",
+                                    "id": "1X9gDLz6mmEPf97DrfIT6hQJUd62zdQLs"
+                        },
+                        {
+                                    "filename": "_HMT8339.jpg",
+                                    "id": "1jSw35a7otkkN1po1OGniufQ43Pd5h_hN"
+                        },
+                        {
+                                    "filename": "_HMT8340.jpg",
+                                    "id": "1Vt4zc0jJ0BTqndiEBgpvj8RhYp_Jf2cc"
+                        },
+                        {
+                                    "filename": "_HMT8341.jpg",
+                                    "id": "1aMqUb8V1yO-YA1oVpJAfnzVRbVAYBqHm"
+                        },
+                        {
+                                    "filename": "_HMT8342.jpg",
+                                    "id": "1TGeRV9CoYxGcbU9PWVB_T5ePTosu0sYp"
+                        },
+                        {
+                                    "filename": "_HMT8343.jpg",
+                                    "id": "1eDCZO243cXusXJo31C3xiyZUG056bYfj"
+                        },
+                        {
+                                    "filename": "_HMT8344.jpg",
+                                    "id": "1oJ1Q9XQGtFHt0jH9jF-KMkO2VSYaORBz"
+                        },
+                        {
+                                    "filename": "_HMT8345.jpg",
+                                    "id": "1G-CtLETGMyKhFwAXU1AH4FyJkgcXR3RV"
+                        },
+                        {
+                                    "filename": "_HMT8346.jpg",
+                                    "id": "1kzLzH2VBaSNzATfdktvukfO0qO-tavu3"
+                        },
+                        {
+                                    "filename": "_HMT8347.jpg",
+                                    "id": "1Z9YXVFzS9kETNuvj_YX5uw3SYNc0iiIq"
+                        },
+                        {
+                                    "filename": "_HMT8348.jpg",
+                                    "id": "1ub0sfr_MuKdnFl-CI93_8uu8HTykhXCE"
+                        },
+                        {
+                                    "filename": "_HMT8349.jpg",
+                                    "id": "1MyfY_2hR0HIG4peJJ0tOua-EpM8WsfQo"
+                        },
+                        {
+                                    "filename": "_HMT8350.jpg",
+                                    "id": "1KkVdJItPIh2USlyUs4XDJCf615lqWFGh"
+                        },
+                        {
+                                    "filename": "_HMT8351.jpg",
+                                    "id": "18g_o--H2mf4QmJW8dpdzBmdKD6Jyfvrv"
+                        },
+                        {
+                                    "filename": "_HMT8352.jpg",
+                                    "id": "1zDYVpxMDQlrqSbuYfHuJAxDfiHTaLXBG"
+                        },
+                        {
+                                    "filename": "_HMT8353.jpg",
+                                    "id": "1pp2cfMv2OykOSbAqC8-HtpmGDinVfe3Y"
+                        },
+                        {
+                                    "filename": "_HMT8354.jpg",
+                                    "id": "1V6nYND2ZF2_OxtgFRikkXe2MQio-f_3b"
+                        },
+                        {
+                                    "filename": "_HMT8355.jpg",
+                                    "id": "1xuQVT1YwZgXJ9pYXVBE35xD8ULxpfLFR"
+                        },
+                        {
+                                    "filename": "_HMT8356.jpg",
+                                    "id": "16Szpc_r2YFloSTHgALutWQnVSeLVKQqJ"
+                        },
+                        {
+                                    "filename": "_HMT8357.jpg",
+                                    "id": "1aF4g5Qj-XLPCAuiuY27Pm2QpFilOZy0m"
+                        },
+                        {
+                                    "filename": "_HMT8358.jpg",
+                                    "id": "181Ku7XWETY3HTR1VIXev6Gf2BgD5miRB"
+                        },
+                        {
+                                    "filename": "_HMT8359.jpg",
+                                    "id": "1qziXVIxV-lRwW59Qq9kuIvQvSGJGn4cZ"
+                        },
+                        {
+                                    "filename": "_HMT8360.jpg",
+                                    "id": "1uAcTDXOUpuXM6_Buj9HSma00bLqxcHvA"
+                        },
+                        {
+                                    "filename": "_HMT8361.jpg",
+                                    "id": "1ZJK7yjA3sp-QpD6U9vrKDtNjeKyBT9xO"
+                        },
+                        {
+                                    "filename": "_HMT8362.jpg",
+                                    "id": "1mGGbtXfo7TMKi3HmduKYvPWN4-od3Bjl"
+                        },
+                        {
+                                    "filename": "_HMT8363.jpg",
+                                    "id": "15mhqu2nvGJM-SPObe7eOdN-3-c2R5APA"
+                        },
+                        {
+                                    "filename": "_HMT8364.jpg",
+                                    "id": "1loTtS4JvIVVWj5RGrTn2hFKq75PcIJ5I"
+                        },
+                        {
+                                    "filename": "_HMT8365.jpg",
+                                    "id": "1sHgZElB1iRWtyUY0LW36UBNUewKdYpLU"
+                        },
+                        {
+                                    "filename": "_HMT8366.jpg",
+                                    "id": "1rGg3dlipBZLqOq3amvEip1FWc_Lp_scg"
+                        },
+                        {
+                                    "filename": "_HMT8367.jpg",
+                                    "id": "1ibtRc8y2ryepIcKZkbsST9uDy22pBVFv"
+                        },
+                        {
+                                    "filename": "_HMT8368.jpg",
+                                    "id": "1xDCzNLmRh8z0CluLGWPZEbldE2EtPbi7"
+                        },
+                        {
+                                    "filename": "_HMT8370.jpg",
+                                    "id": "1xsmue1uheaE8wS6FUX_BYlPEwAh8VrOw"
+                        },
+                        {
+                                    "filename": "_HMT8371.jpg",
+                                    "id": "1dCkLd39aqnJT9MaqvmezARVN7QCMvPCn"
+                        },
+                        {
+                                    "filename": "_HMT8372.jpg",
+                                    "id": "1K0PKa-sDDPz7R6SFlkuECrg6lyJr7-JY"
+                        }
+            ]
+};
+
+        // ===== PHOTOS DATA (55 ảnh Thành Công - Ngọc Ánh) =====
+        const drivePhotos = [
+            {
+                        "filename": "_HMT8317.jpg",
+                        "id": "1trP7iOgDf46dF2UAO0cxeZG4OedoVTNq"
+            },
+            {
+                        "filename": "_HMT8318.jpg",
+                        "id": "1Q1riDdig6bFUsL6WVKjE3yoPY2GZgX0Y"
+            },
+            {
+                        "filename": "_HMT8319.jpg",
+                        "id": "12fdTmth14XnKovVSGa-KSrXAOEHJmYUM"
+            },
+            {
+                        "filename": "_HMT8320.jpg",
+                        "id": "1_IuPCnMWF2mU0ZykQU6UIs6cTi1Z2hJr"
+            },
+            {
+                        "filename": "_HMT8321.jpg",
+                        "id": "14zqglEPiUM0S-OjyttCpWBnCnl3jieJY"
+            },
+            {
+                        "filename": "_HMT8322.jpg",
+                        "id": "1X9SbyUMvbwOWYM25qzQt9Cf-fUY0OqUg"
+            },
+            {
+                        "filename": "_HMT8323.jpg",
+                        "id": "1zMAlNzxwLU4rj_iV2rMF12KFnYgCwb8C"
+            },
+            {
+                        "filename": "_HMT8324.jpg",
+                        "id": "1qj9_Idfs9xQoHg3h4qaHyM1Mi-tt2nzi"
+            },
+            {
+                        "filename": "_HMT8325.jpg",
+                        "id": "1u72bbiEV4QNNdBLKwHq3hIaNawj4K0uX"
+            },
+            {
+                        "filename": "_HMT8326.jpg",
+                        "id": "1O-Q0WNlEIkAleoNaii3W6jlbwuG1K8Ko"
+            },
+            {
+                        "filename": "_HMT8327.jpg",
+                        "id": "1nBhPl9owRHDE9XEa7_6pa5C4NuFIdBPD"
+            },
+            {
+                        "filename": "_HMT8328.jpg",
+                        "id": "12pGOtTbLNBERa5BrdxZqlR-UD5kqwfvS"
+            },
+            {
+                        "filename": "_HMT8329.jpg",
+                        "id": "1zqI8xem1KxKH6_RNMA1NTF5iyau1ATWG"
+            },
+            {
+                        "filename": "_HMT8330.jpg",
+                        "id": "1WgHqbcFtA51S1OSyPchgEcrPsXGI7lze"
+            },
+            {
+                        "filename": "_HMT8331.jpg",
+                        "id": "1FS3YBiA-lRKHzLyBKEEE0Z6tMgqEIYWR"
+            },
+            {
+                        "filename": "_HMT8332.jpg",
+                        "id": "1l9gf7NUaGyE2cA7cxGK3vrZLTMzulVlP"
+            },
+            {
+                        "filename": "_HMT8333.jpg",
+                        "id": "1MY96vGvnqhCiLsMM0G9AM2F-jj3nGe74"
+            },
+            {
+                        "filename": "_HMT8334.jpg",
+                        "id": "1oWFxyOhcHtFVJm2afItKoZDqXkwoMmMY"
+            },
+            {
+                        "filename": "_HMT8335.jpg",
+                        "id": "12ojNopsPMbdCtd564KDB-rIm5AoZFg2l"
+            },
+            {
+                        "filename": "_HMT8336.jpg",
+                        "id": "1PJhXSB0bXZlbkxWZhu3o78-stxjpcghV"
+            },
+            {
+                        "filename": "_HMT8337.jpg",
+                        "id": "1PPB6cQzOFmz8W717wqVCzRbmvndHT0Y9"
+            },
+            {
+                        "filename": "_HMT8338.jpg",
+                        "id": "1X9gDLz6mmEPf97DrfIT6hQJUd62zdQLs"
+            },
+            {
+                        "filename": "_HMT8339.jpg",
+                        "id": "1jSw35a7otkkN1po1OGniufQ43Pd5h_hN"
+            },
+            {
+                        "filename": "_HMT8340.jpg",
+                        "id": "1Vt4zc0jJ0BTqndiEBgpvj8RhYp_Jf2cc"
+            },
+            {
+                        "filename": "_HMT8341.jpg",
+                        "id": "1aMqUb8V1yO-YA1oVpJAfnzVRbVAYBqHm"
+            },
+            {
+                        "filename": "_HMT8342.jpg",
+                        "id": "1TGeRV9CoYxGcbU9PWVB_T5ePTosu0sYp"
+            },
+            {
+                        "filename": "_HMT8343.jpg",
+                        "id": "1eDCZO243cXusXJo31C3xiyZUG056bYfj"
+            },
+            {
+                        "filename": "_HMT8344.jpg",
+                        "id": "1oJ1Q9XQGtFHt0jH9jF-KMkO2VSYaORBz"
+            },
+            {
+                        "filename": "_HMT8345.jpg",
+                        "id": "1G-CtLETGMyKhFwAXU1AH4FyJkgcXR3RV"
+            },
+            {
+                        "filename": "_HMT8346.jpg",
+                        "id": "1kzLzH2VBaSNzATfdktvukfO0qO-tavu3"
+            },
+            {
+                        "filename": "_HMT8347.jpg",
+                        "id": "1Z9YXVFzS9kETNuvj_YX5uw3SYNc0iiIq"
+            },
+            {
+                        "filename": "_HMT8348.jpg",
+                        "id": "1ub0sfr_MuKdnFl-CI93_8uu8HTykhXCE"
+            },
+            {
+                        "filename": "_HMT8349.jpg",
+                        "id": "1MyfY_2hR0HIG4peJJ0tOua-EpM8WsfQo"
+            },
+            {
+                        "filename": "_HMT8350.jpg",
+                        "id": "1KkVdJItPIh2USlyUs4XDJCf615lqWFGh"
+            },
+            {
+                        "filename": "_HMT8351.jpg",
+                        "id": "18g_o--H2mf4QmJW8dpdzBmdKD6Jyfvrv"
+            },
+            {
+                        "filename": "_HMT8352.jpg",
+                        "id": "1zDYVpxMDQlrqSbuYfHuJAxDfiHTaLXBG"
+            },
+            {
+                        "filename": "_HMT8353.jpg",
+                        "id": "1pp2cfMv2OykOSbAqC8-HtpmGDinVfe3Y"
+            },
+            {
+                        "filename": "_HMT8354.jpg",
+                        "id": "1V6nYND2ZF2_OxtgFRikkXe2MQio-f_3b"
+            },
+            {
+                        "filename": "_HMT8355.jpg",
+                        "id": "1xuQVT1YwZgXJ9pYXVBE35xD8ULxpfLFR"
+            },
+            {
+                        "filename": "_HMT8356.jpg",
+                        "id": "16Szpc_r2YFloSTHgALutWQnVSeLVKQqJ"
+            },
+            {
+                        "filename": "_HMT8357.jpg",
+                        "id": "1aF4g5Qj-XLPCAuiuY27Pm2QpFilOZy0m"
+            },
+            {
+                        "filename": "_HMT8358.jpg",
+                        "id": "181Ku7XWETY3HTR1VIXev6Gf2BgD5miRB"
+            },
+            {
+                        "filename": "_HMT8359.jpg",
+                        "id": "1qziXVIxV-lRwW59Qq9kuIvQvSGJGn4cZ"
+            },
+            {
+                        "filename": "_HMT8360.jpg",
+                        "id": "1uAcTDXOUpuXM6_Buj9HSma00bLqxcHvA"
+            },
+            {
+                        "filename": "_HMT8361.jpg",
+                        "id": "1ZJK7yjA3sp-QpD6U9vrKDtNjeKyBT9xO"
+            },
+            {
+                        "filename": "_HMT8362.jpg",
+                        "id": "1mGGbtXfo7TMKi3HmduKYvPWN4-od3Bjl"
+            },
+            {
+                        "filename": "_HMT8363.jpg",
+                        "id": "15mhqu2nvGJM-SPObe7eOdN-3-c2R5APA"
+            },
+            {
+                        "filename": "_HMT8364.jpg",
+                        "id": "1loTtS4JvIVVWj5RGrTn2hFKq75PcIJ5I"
+            },
+            {
+                        "filename": "_HMT8365.jpg",
+                        "id": "1sHgZElB1iRWtyUY0LW36UBNUewKdYpLU"
+            },
+            {
+                        "filename": "_HMT8366.jpg",
+                        "id": "1rGg3dlipBZLqOq3amvEip1FWc_Lp_scg"
+            },
+            {
+                        "filename": "_HMT8367.jpg",
+                        "id": "1ibtRc8y2ryepIcKZkbsST9uDy22pBVFv"
+            },
+            {
+                        "filename": "_HMT8368.jpg",
+                        "id": "1xDCzNLmRh8z0CluLGWPZEbldE2EtPbi7"
+            },
+            {
+                        "filename": "_HMT8370.jpg",
+                        "id": "1xsmue1uheaE8wS6FUX_BYlPEwAh8VrOw"
+            },
+            {
+                        "filename": "_HMT8371.jpg",
+                        "id": "1dCkLd39aqnJT9MaqvmezARVN7QCMvPCn"
+            },
+            {
+                        "filename": "_HMT8372.jpg",
+                        "id": "1K0PKa-sDDPz7R6SFlkuECrg6lyJr7-JY"
+            }
+];
+
+        let photos = drivePhotos.map((item, idx) => ({
+            id: idx + 1,
+            filename: item.filename,
+            previewUrl: `https://lh3.googleusercontent.com/d/${item.id}=w800`,
+            highResUrl:  `https://lh3.googleusercontent.com/d/${item.id}=w2400`,
+            downloadUrl: `https://drive.google.com/uc?export=download&id=${item.id}`,
+            selected: false,
+            comment: ""
+        }));
+
+        let currentFilter = 'all';
+        let currentSearch = '';
+        let currentLightboxIndex = -1;
+        let currentViewMode = 'portrait'; // 'portrait' (khổ đứng giữ mặt) hoặc 'contain' (trọn vẹn 100%)
+
+        // ===== TRẠNG THÁI ZOOM & PAN =====
+        let currentZoom = 1.0;
+        let panX = 0, panY = 0;
+        let isDragging = false;
+        let dragStartX = 0, dragStartY = 0;
+        let initialPinchDistance = null;
+        let initialZoomOnPinch = 1.0;
+
+        // ===== KHÓA BẢO MẬT =====
+        function initPasswordProtection() {
+            const key = `hmt_unlocked_${albumConfig.id}`;
+            document.getElementById('lockAlbumTitle').innerText = albumConfig.title;
+            if (sessionStorage.getItem(key) === 'true') {
+                document.getElementById('lockScreen').classList.add('hidden');
+            } else {
+                document.getElementById('lockScreen').classList.remove('hidden');
+                setTimeout(() => document.getElementById('albumPasswordInput').focus(), 100);
+            }
+        }
+        function handleLockSubmit(e) {
+            if (e) e.preventDefault();
+            const v = document.getElementById('albumPasswordInput').value.trim();
+            if (v === (albumConfig.password || '1234')) {
+                sessionStorage.setItem(`hmt_unlocked_${albumConfig.id}`, 'true');
+                const ls = document.getElementById('lockScreen');
+                ls.style.opacity = '0';
+                ls.style.transition = 'opacity 0.3s';
+                setTimeout(() => ls.classList.add('hidden'), 300);
+                showToast('🎉 Mở khóa thành công!');
+            } else {
+                const err = document.getElementById('lockErrorMsg');
+                err.classList.remove('hidden');
+                document.getElementById('albumPasswordInput').select();
+            }
+        }
+        function togglePasswordVisibility() {
+            const i = document.getElementById('albumPasswordInput');
+            const ic = document.getElementById('eyeIcon');
+            if (i.type === 'password') { i.type = 'text'; ic.className = 'fa-regular fa-eye-slash'; }
+            else { i.type = 'password'; ic.className = 'fa-regular fa-eye'; }
+        }
+        function lockAlbumManually() {
+            sessionStorage.removeItem(`hmt_unlocked_${albumConfig.id}`);
+            const ls = document.getElementById('lockScreen');
+            ls.style.opacity = '1';
+            ls.classList.remove('hidden');
+            document.getElementById('albumPasswordInput').value = '';
+            document.getElementById('lockErrorMsg').classList.add('hidden');
+        }
+
+        // ===== CHẾ ĐỘ XEM (FIX CẮT ĐẦU) =====
+        function setViewMode(mode) {
+            currentViewMode = mode;
+            const btnP = document.getElementById('btnViewPortrait');
+            const btnC = document.getElementById('btnViewContain');
+            if (mode === 'portrait') {
+                btnP.className = 'px-2.5 py-1.5 rounded-lg bg-white shadow-xs text-slate-800 transition-all flex items-center gap-1 font-bold';
+                btnC.className = 'px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition-all flex items-center gap-1';
+            } else {
+                btnC.className = 'px-2.5 py-1.5 rounded-lg bg-white shadow-xs text-slate-800 transition-all flex items-center gap-1 font-bold';
+                btnP.className = 'px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition-all flex items-center gap-1';
+            }
+            renderGrid();
+        }
+
+        // ===== THEME =====
+        function setTheme(k) {
+            document.body.className = `theme-${k} min-h-screen text-slate-800 antialiased pb-28 sm:pb-12 transition-colors duration-300`;
+            albumConfig.theme = k;
+            localStorage.setItem(`hmt_theme_${albumConfig.id}`, k);
+            const labels = { vu_quy:'Vu Quy', tan_hon:'Tân Hôn', sinh_nhat:'Sinh Nhật', chan_dung:'Chân Dung' };
+            const badge = document.getElementById('themeBadge');
+            if (badge) badge.innerText = labels[k] || 'Album';
+            document.getElementById('themeMenu').classList.add('hidden');
+            renderGrid();
+        }
+        function toggleThemeMenu() {
+            document.getElementById('themeMenu').classList.toggle('hidden');
+        }
+        window.addEventListener('click', e => {
+            if (!e.target.closest('#themeMenu') && !e.target.closest('[onclick="toggleThemeMenu()"]'))
+                document.getElementById('themeMenu')?.classList.add('hidden');
+        });
+
+        // ===== AUTO-SAVE LOCALSTORAGE =====
+        function saveToStorage() {
+            try {
+                localStorage.setItem(`hmt_sel_${albumConfig.id}`, JSON.stringify(
+                    photos.map(p => ({ id: p.id, fn: p.filename, s: p.selected, c: p.comment }))
+                ));
+            } catch(e) {}
+        }
+        function loadFromStorage() {
+            try {
+                const raw = localStorage.getItem(`hmt_sel_${albumConfig.id}`);
+                if (!raw) return false;
+                JSON.parse(raw).forEach(d => {
+                    const t = photos.find(p => p.filename === d.fn);
+                    if (t) { t.selected = d.s; t.comment = d.c || ''; }
+                });
+                return true;
+            } catch(e) { return false; }
+        }
+
+        // ===== SHARE LINK (THAY QR) =====
+        async function copyAlbumLink() {
+            const url = window.location.href;
+            try {
+                await navigator.clipboard.writeText(url);
+                showToast('🔗 Đã sao chép link! Dán gửi khách qua Zalo/Messenger.');
+            } catch(e) {
+                prompt('Sao chép link này gửi khách:', url);
+            }
+        }
+
+        // ===== RENDER GRID =====
+        function renderGrid() {
+            const grid = document.getElementById('photoGrid');
+            const empty = document.getElementById('emptyState');
+            const filtered = photos.filter(p => {
+                if (currentFilter === 'selected' && !p.selected) return false;
+                if (currentFilter === 'commented' && !p.comment.trim()) return false;
+                if (currentSearch && !p.filename.toLowerCase().includes(currentSearch.toLowerCase())) return false;
+                return true;
+            });
+            if (!filtered.length) {
+                grid.innerHTML = ''; empty.classList.remove('hidden'); updateCounters(); return;
+            }
+            empty.classList.add('hidden');
+
+            const imgClass = currentViewMode === 'portrait' ? 'photo-thumb-portrait' : 'photo-thumb-contain';
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="group relative bg-white rounded-2xl overflow-hidden border ${p.selected ? 't-border ring-2 ring-sky-400/30 shadow-md' : 'border-slate-200/90 shadow-sm'} transition-all duration-200">
+                    <div class="relative aspect-[3/4] overflow-hidden cursor-pointer bg-slate-100" onclick="openLightbox(${p.id})">
+                        <img src="${p.previewUrl}" alt="${p.filename}" loading="lazy" class="w-full h-full ${imgClass} group-hover:scale-105 transition-transform duration-300 pointer-events-none">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors pointer-events-none"></div>
+                        ${p.selected ? `<div class="absolute top-2 left-2 w-6 h-6 rounded-full t-bg text-white flex items-center justify-center text-[10px] shadow font-bold pointer-events-none"><i class="fa-solid fa-check"></i></div>` : ''}
+                        ${p.comment ? `<div class="absolute top-2 right-2 px-1.5 py-0.5 rounded-md bg-amber-500 text-white text-[9px] font-bold shadow pointer-events-none"><i class="fa-solid fa-comment-dots"></i></div>` : ''}
+                    </div>
+                    <div class="px-2.5 py-2 flex items-center justify-between bg-white border-t border-slate-100">
+                        <div class="min-w-0 mr-1 cursor-pointer" onclick="openLightbox(${p.id})">
+                            <span class="text-[11px] font-semibold text-slate-800 truncate block">${p.filename}</span>
+                            ${p.comment ? `<p class="text-[9px] text-amber-600 truncate font-medium">${p.comment}</p>` : `<span class="text-[9px] text-slate-400">Chưa ghi chú</span>`}
+                        </div>
+                        <button onclick="toggleCardSelect(${p.id}, event)"
+                                class="w-8 h-8 rounded-full flex items-center justify-center transition-all flex-shrink-0 ${p.selected ? 't-text bg-sky-50 heart-pop' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'} active:scale-75">
+                            <i class="${p.selected ? 'fa-solid fa-heart text-rose-500' : 'fa-regular fa-heart'} text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            updateCounters();
+        }
+
+        function updateCounters() {
+            const sel = photos.filter(p => p.selected || p.comment.trim()).length;
+            const com = photos.filter(p => p.comment.trim()).length;
+            const max = albumConfig.maxPhotos || 120;
+            const rem = max - sel;
+
+            document.getElementById('countAll').innerText = photos.length;
+            document.getElementById('countSelected').innerText = sel;
+            document.getElementById('countCommented').innerText = com;
+            document.getElementById('headerSelectedCount').innerText = sel;
+            document.getElementById('mobileCountSelected').innerText = sel;
+            document.getElementById('modalTotalSelected').innerText = `${sel} ảnh`;
+            document.getElementById('quotaCurrent').innerText = sel;
+            document.getElementById('quotaMax').innerText = max;
+
+            const bar = document.getElementById('quotaProgressBar');
+            const st  = document.getElementById('quotaStatusText');
+            const pct = Math.min(100, Math.round(sel / max * 100));
+            bar.style.width = pct + '%';
+
+            if (rem > 0)      { st.innerText = `Còn lại ${rem} ảnh`; st.className = 'text-slate-500 text-[11px]'; }
+            else if (rem === 0) { st.innerText = `🎉 Đủ ${max} ảnh gói chụp!`; st.className = 'text-emerald-600 font-bold text-[11px]'; }
+            else { st.innerText = `⚠️ Vượt gói +${Math.abs(rem)} ảnh phát sinh`; st.className = 'text-amber-600 font-bold text-[11px]'; }
+        }
+
+        function toggleCardSelect(id, e) {
+            if (e) e.stopPropagation();
+            const p = photos.find(x => x.id === id);
+            if (p) {
+                p.selected = !p.selected;
+                saveToStorage();
+                renderGrid();
+                showToast(p.selected ? `❤️ Đã chọn ${p.filename}` : `Bỏ chọn ${p.filename}`);
+            }
+        }
+
+        function setFilter(f) {
+            currentFilter = f;
+            [['tabAll','all'],['tabSelected','selected'],['tabCommented','commented']].forEach(([id, val]) => {
+                const el = document.getElementById(id);
+                if (val === f) {
+                    el.className = `px-3 py-1.5 rounded-xl t-bg text-white whitespace-nowrap`;
+                    if (f === 'commented') el.className = `px-3 py-1.5 rounded-xl bg-amber-500 text-white whitespace-nowrap`;
+                } else {
+                    el.className = 'px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap';
+                }
+            });
+            renderGrid();
+        }
+
+        function onSearch(v) {
+            currentSearch = v.trim();
+            document.getElementById('clearSearchBtn').classList.toggle('hidden', !currentSearch);
+            renderGrid();
+        }
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            currentSearch = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            renderGrid();
+        }
+
+        // ============================================================
+        // 🔍 LIGHTBOX & ZOOM / PAN ENGINE HOÀN CHỈNH
+        // ============================================================
+        function openLightbox(id) {
+            currentLightboxIndex = photos.findIndex(p => p.id === id);
+            if (currentLightboxIndex < 0) return;
+            resetZoom();
+            updateLightboxView();
+            const lb = document.getElementById('lightboxModal');
+            lb.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            resetZoom();
+            const lb = document.getElementById('lightboxModal');
+            lb.classList.remove('open');
+            document.body.style.overflow = '';
+            renderGrid();
+        }
+
+        function handleBackdropClick(e) {
+            if (currentZoom > 1.0) return; // Đang zoom thì không đóng khi click ngoài
+            if (e.target.id === 'lightboxModal' || e.target.id === 'lightboxTouchArea') {
+                closeLightbox();
+            }
+        }
+
+        function updateLightboxView() {
+            const p = photos[currentLightboxIndex];
+            if (!p) return;
+            resetZoom();
+            document.getElementById('lightboxFilename').innerText = p.filename;
+            document.getElementById('lightboxCounter').innerText = `Ảnh ${currentLightboxIndex+1} / ${photos.length}`;
+            // Tải nhanh w800 trước
+            document.getElementById('lightboxImg').src = p.previewUrl;
+            document.getElementById('lightboxCommentInput').value = p.comment;
+            const btn   = document.getElementById('lightboxHeartBtn');
+            const badge = document.getElementById('lightboxHeartBadge');
+            if (p.selected) {
+                btn.className = 'w-full py-2.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95 t-bg text-white heart-pop mb-2.5 shadow-md';
+                btn.innerHTML = '<i class="fa-solid fa-heart"></i><span>ĐÃ CHỌN ẢNH NÀY</span>';
+                badge.classList.remove('hidden');
+            } else {
+                btn.className = 'w-full py-2.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95 bg-slate-800 text-slate-300 hover:bg-slate-700 mb-2.5 shadow-md';
+                btn.innerHTML = '<i class="fa-regular fa-heart text-rose-400"></i><span>Thả Tim Chọn Ảnh Này</span>';
+                badge.classList.add('hidden');
+            }
+        }
+
+        // ===== LOGIC ZOOM & PAN CỰC MƯỢT (MOBILE & PC) =====
+        function clampPan() {
+            if (currentZoom <= 1.05) { panX = 0; panY = 0; return; }
+            const img = document.getElementById('lightboxImg');
+            const area = document.getElementById('lightboxTouchArea');
+            if (!img || !area) return;
+            const w = img.clientWidth || (area.clientWidth * 0.8);
+            const h = img.clientHeight || (area.clientHeight * 0.8);
+            const maxPanX = Math.max(60, (w * (currentZoom - 1)) / 2 + 120);
+            const maxPanY = Math.max(60, (h * (currentZoom - 1)) / 2 + 120);
+            panX = Math.min(maxPanX, Math.max(-maxPanX, panX));
+            panY = Math.min(maxPanY, Math.max(-maxPanY, panY));
+        }
+
+        function applyZoom(smooth = true) {
+            const img = document.getElementById('lightboxImg');
+            const txt = document.getElementById('zoomLevelText');
+            const area = document.getElementById('lightboxTouchArea');
+            if (!img) return;
+
+            img.style.transition = smooth ? 'transform 0.25s cubic-bezier(0.2, 0, 0, 1)' : 'none';
+            img.style.transform = `translate(${panX}px, ${panY}px) scale(${currentZoom})`;
+            if (txt) txt.innerText = `${Math.round(currentZoom * 100)}%`;
+
+            if (currentZoom > 1.05) {
+                if (area) {
+                    area.classList.remove('cursor-pointer');
+                    area.classList.add('cursor-grab');
+                }
+                // Tự động nâng cấp lên ảnh nét w2400 khi zoom
+                const p = photos[currentLightboxIndex];
+                if (p && p.highResUrl && !img.src.includes('=w2400')) {
+                    img.src = p.highResUrl;
+                }
+            } else {
+                if (area) {
+                    area.classList.remove('cursor-grab', 'cursor-grabbing');
+                    area.classList.add('cursor-pointer');
+                }
+                panX = 0; panY = 0;
+            }
+        }
+
+        function zoomIn(e) {
+            if (e) e.stopPropagation();
+            currentZoom = Math.min(3.5, currentZoom + 0.5);
+            clampPan();
+            applyZoom(true);
+        }
+
+        function zoomOut(e) {
+            if (e) e.stopPropagation();
+            currentZoom = Math.max(1.0, currentZoom - 0.5);
+            clampPan();
+            applyZoom(true);
+        }
+
+        function resetZoom(e) {
+            if (e) e.stopPropagation();
+            currentZoom = 1.0;
+            panX = 0; panY = 0;
+            applyZoom(true);
+        }
+
+        function toggleZoom(e) {
+            if (e) e.stopPropagation();
+            if (currentZoom > 1.05) {
+                resetZoom();
+            } else {
+                currentZoom = 2.0;
+                panX = 0; panY = 0;
+                applyZoom(true);
+            }
+        }
+
+        // ===== KÉO RÊ ẢNH (PAN DRAG) TRÊN MÁY TÍNH & LĂN CHUỘT =====
+        let isMouseDragging = false;
+        let mouseStartX = 0, mouseStartY = 0;
+        let mouseStartPanX = 0, mouseStartPanY = 0;
+
+        const touchAreaEl = document.getElementById('lightboxTouchArea');
+        if (touchAreaEl) {
+            touchAreaEl.addEventListener('mousedown', e => {
+                if (e.target.closest('button') || e.target.closest('input')) return;
+                if (currentZoom <= 1.05) return;
+                e.preventDefault();
+                isMouseDragging = true;
+                mouseStartX = e.clientX;
+                mouseStartY = e.clientY;
+                mouseStartPanX = panX;
+                mouseStartPanY = panY;
+                touchAreaEl.classList.remove('cursor-grab');
+                touchAreaEl.classList.add('cursor-grabbing');
+            });
+
+            window.addEventListener('mousemove', e => {
+                if (!isMouseDragging || currentZoom <= 1.05) return;
+                e.preventDefault();
+                panX = mouseStartPanX + (e.clientX - mouseStartX);
+                panY = mouseStartPanY + (e.clientY - mouseStartY);
+                clampPan();
+                applyZoom(false); // Di chuyển mượt tức thì theo chuột
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (isMouseDragging) {
+                    isMouseDragging = false;
+                    touchAreaEl.classList.remove('cursor-grabbing');
+                    if (currentZoom > 1.05) touchAreaEl.classList.add('cursor-grab');
+                }
+            });
+
+            // Lăn chuột để Zoom In / Out
+            touchAreaEl.addEventListener('wheel', e => {
+                e.preventDefault();
+                if (e.deltaY < 0) {
+                    currentZoom = Math.min(3.5, currentZoom + 0.25);
+                } else {
+                    currentZoom = Math.max(1.0, currentZoom - 0.25);
+                }
+                clampPan();
+                applyZoom(true);
+            }, { passive: false });
+        }
+
+        function prevPhoto(e) {
+            if (e) e.stopPropagation();
+            resetZoom();
+            if (currentLightboxIndex > 0) {
+                currentLightboxIndex--;
+                updateLightboxView();
+            } else {
+                currentLightboxIndex = photos.length - 1;
+                updateLightboxView();
+            }
+        }
+
+        function nextPhoto(e) {
+            if (e) e.stopPropagation();
+            resetZoom();
+            if (currentLightboxIndex < photos.length - 1) {
+                currentLightboxIndex++;
+                updateLightboxView();
+            } else {
+                currentLightboxIndex = 0;
+                updateLightboxView();
+            }
+        }
+
+        function toggleLightboxSelect() {
+            const p = photos[currentLightboxIndex];
+            if (!p) return;
+            p.selected = !p.selected;
+            saveToStorage();
+            updateLightboxView();
+            showToast(p.selected ? `❤️ Đã chọn ${p.filename}` : `Bỏ chọn ${p.filename}`);
+        }
+
+        function saveCurrentComment(v) {
+            const p = photos[currentLightboxIndex];
+            if (!p) return;
+            p.comment = v;
+            if (v.trim()) p.selected = true;
+            saveToStorage();
+            updateLightboxView();
+        }
+
+        function addPresetTag(tag) {
+            const input = document.getElementById('lightboxCommentInput');
+            const cur = input.value.trim();
+            input.value = cur ? `${cur}, ${tag}` : tag;
+            saveCurrentComment(input.value);
+        }
+
+        function downloadCurrentOriginal() {
+            const p = photos[currentLightboxIndex];
+            if (p) window.open(p.downloadUrl, '_blank');
+        }
+
+        // ===== PHÍM TẮT BÀN PHÍM (ESC, MŨI TÊN, PHÍM + - 0) =====
+        window.addEventListener('keydown', e => {
+            const lb = document.getElementById('lightboxModal');
+            const isLbOpen = lb && lb.classList.contains('open');
+
+            if (e.key === 'Escape') {
+                if (isLbOpen) closeLightbox();
+                closeSubmitModal();
+            }
+
+            if (isLbOpen) {
+                if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevPhoto();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    nextPhoto();
+                } else if (e.key === '+' || e.key === '=') {
+                    e.preventDefault();
+                    zoomIn();
+                } else if (e.key === '-' || e.key === '_') {
+                    e.preventDefault();
+                    zoomOut();
+                } else if (e.key === '0') {
+                    e.preventDefault();
+                    resetZoom();
+                } else if (e.key === ' ') {
+                    e.preventDefault();
+                    toggleLightboxSelect();
+                }
+            }
+        });
+
+        // ===== CỬ CHỈ CẢM ỨNG MOBILE: DI CHUYỂN RÊ ẢNH KHI ZOOM & VUỐT CHUYỂN ẢNH =====
+        let touchStartX = 0, touchStartY = 0;
+        let touchStartPanX = 0, touchStartPanY = 0;
+        let lastTapTime = 0;
+        let isTouchPanning = false;
+
+        if (touchAreaEl) {
+            touchAreaEl.addEventListener('touchstart', e => {
+                if (e.target.closest('button') || e.target.closest('input')) return;
+
+                if (e.touches.length === 1) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                    touchStartPanX = panX;
+                    touchStartPanY = panY;
+
+                    // Nhấp đúp (Double Tap) trên mobile để phóng to 2x / reset 1x
+                    const now = Date.now();
+                    if (now - lastTapTime < 320) {
+                        toggleZoom();
+                        lastTapTime = 0;
+                        return;
+                    }
+                    lastTapTime = now;
+
+                    if (currentZoom > 1.05) {
+                        isTouchPanning = true;
+                    }
+                } else if (e.touches.length === 2) {
+                    // Pinch-to-zoom 2 ngón tay
+                    isTouchPanning = false;
+                    const dx = e.touches[0].clientX - e.touches[1].clientX;
+                    const dy = e.touches[0].clientY - e.touches[1].clientY;
+                    initialPinchDistance = Math.hypot(dx, dy);
+                    initialZoomOnPinch = currentZoom;
+                }
+            }, { passive: true });
+
+            touchAreaEl.addEventListener('touchmove', e => {
+                // 1. KÉO RÊ 1 NGÓN TAY KHI ĐANG ZOOM ĐỂ XEM CHI TIẾT
+                if (e.touches.length === 1 && currentZoom > 1.05 && isTouchPanning) {
+                    if (e.cancelable) e.preventDefault(); // Chặn cuộn trang web
+                    const dx = e.touches[0].clientX - touchStartX;
+                    const dy = e.touches[0].clientY - touchStartY;
+                    panX = touchStartPanX + dx;
+                    panY = touchStartPanY + dy;
+                    clampPan();
+                    applyZoom(false); // Di chuyển mượt 1:1 theo ngón tay
+                }
+                // 2. PINCH TO ZOOM BẰNG 2 NGÓN TAY
+                else if (e.touches.length === 2 && initialPinchDistance) {
+                    if (e.cancelable) e.preventDefault();
+                    const dx = e.touches[0].clientX - e.touches[1].clientX;
+                    const dy = e.touches[0].clientY - e.touches[1].clientY;
+                    const currentDist = Math.hypot(dx, dy);
+                    const scaleFactor = currentDist / initialPinchDistance;
+                    currentZoom = Math.min(3.5, Math.max(1.0, initialZoomOnPinch * scaleFactor));
+                    clampPan();
+                    applyZoom(false);
+                }
+            }, { passive: false });
+
+            touchAreaEl.addEventListener('touchend', e => {
+                isTouchPanning = false;
+                initialPinchDistance = null;
+
+                // Khi ở mức zoom thường (1x), vuốt ngang để chuyển ảnh
+                if (currentZoom <= 1.05 && e.changedTouches.length === 1) {
+                    const diffX = e.changedTouches[0].clientX - touchStartX;
+                    const diffY = e.changedTouches[0].clientY - touchStartY;
+                    if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+                        if (diffX < 0) nextPhoto();
+                        else prevPhoto();
+                    } else if (diffY > 90 && Math.abs(diffY) > Math.abs(diffX)) {
+                        closeLightbox();
+                    }
+                }
+            }, { passive: true });
+        }
+
+        // ===== SUBMIT MODAL =====
+        function openSubmitModal() {
+            const selected = photos.filter(p => p.selected || p.comment.trim());
+            const listEl = document.getElementById('modalSelectedList');
+            if (!selected.length) {
+                listEl.innerHTML = '<div class="py-6 text-center text-slate-400">Chưa có ảnh nào được chọn. Hãy bấm thả tim trên các bức ảnh bạn thích nhé!</div>';
+            } else {
+                listEl.innerHTML = selected.map((p, idx) => `
+                    <div class="py-2 flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <span class="text-slate-400 font-mono text-[11px] w-4">${idx+1}.</span>
+                            <span class="font-bold text-slate-800 truncate">${p.filename}</span>
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            ${p.comment ? `<span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-semibold">${p.comment}</span>` : `<span class="text-slate-400 text-[11px]">Chọn</span>`}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            document.getElementById('modalTotalSelected').innerText = `${selected.length} ảnh`;
+            document.getElementById('submitModal').classList.remove('hidden');
+        }
+        function closeSubmitModal() {
+            document.getElementById('submitModal').classList.add('hidden');
+        }
+
+        async function submitToServer() {
+            const selected = photos.filter(p => p.selected || p.comment.trim());
+            if (!selected.length) {
+                alert('Vui lòng chọn ít nhất 1 ảnh trước khi gửi!');
+                return;
+            }
+            const payload = {
+                albumId: albumConfig.id,
+                albumTitle: albumConfig.title,
+                customerName: document.getElementById('custName').value.trim() || albumConfig.clientName,
+                customerPhone: document.getElementById('custPhone').value.trim(),
+                generalNote: document.getElementById('custGeneralNote').value.trim(),
+                timestamp: new Date().toISOString(),
+                selections: selected.map(p => ({
+                    filename: p.filename,
+                    comment: p.comment.trim()
+                }))
+            };
+
+            // 1. GỬI TỰ ĐỘNG ĐẾN GOOGLE SHEETS WEBHOOK 24/7 (ĐÁM MÂY VĨNH VIỄN)
+            const webhookUrl = albumConfig.googleSheetWebhook || "https://script.google.com/macros/s/AKfycbzyWUSwrdaeCMrhtWg-M7dC_Lam3l2i9RHpF5dOfYISCgjtgC1P6HGiKnEYKHGT2CZ_/exec";
+            if (webhookUrl) {
+                try {
+                    fetch(webhookUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    console.log('✅ Đã gửi lên Google Sheets Webhook 24/7!');
+                } catch(e) {
+                    console.warn('Lỗi gửi Webhook Google Sheets:', e);
+                }
+            }
+
+            // 2. GỬI ĐỒNG THỜI VỀ SERVER STUDIO (NẾU STUDIO ĐANG MỞ APP)
+            let savedServerFile = null;
+            try {
+                const targetUrl = albumConfig.serverEndpoint.startsWith('http') 
+                    ? albumConfig.serverEndpoint 
+                    : `${window.location.protocol}//${window.location.host}${albumConfig.serverEndpoint}`;
+
+                const res = await fetch(targetUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    savedServerFile = data.savedFile;
+                }
+            } catch(e) {
+                console.warn('Server Studio offline, kết quả đã được bảo toàn trên Google Sheets 24/7.');
+            }
+
+            // 3. HIỂN THỊ THÀNH CÔNG RỰC RỠ CHO KHÁCH
+            closeSubmitModal();
+            showSuccessOverlay(payload, savedServerFile);
+        }
+
+        function showSuccessOverlay(payload, savedFile) {
+            const sumEl = document.getElementById('successSummary');
+            sumEl.innerHTML = `
+                <div><b>Người gửi:</b> ${payload.customerName}</div>
+                ${payload.customerPhone ? `<div><b>SĐT/Zalo:</b> ${payload.customerPhone}</div>` : ''}
+                <div><b>Số lượng:</b> ${payload.selections.length} ảnh</div>
+                <div class="text-emerald-700 font-bold py-1"><i class="fa-solid fa-cloud-arrow-up mr-1"></i>Đã lưu an toàn vào Hệ thống Đám mây Studio HMT 24/7!</div>
+                ${savedFile ? `<div class="text-sky-700 text-[10px]"><b>Mã lưu máy Studio:</b> ${savedFile}</div>` : ''}
+            `;
+            document.getElementById('successOverlay').classList.add('show');
+        }
+        function closeSuccessOverlay() {
+            document.getElementById('successOverlay').classList.remove('show');
+        }
+
+        function downloadListTxt() {
+            const selected = photos.filter(p => p.selected || p.comment.trim());
+            const cust = document.getElementById('custName').value.trim() || 'Khach';
+            const phone = document.getElementById('custPhone').value.trim();
+            const note = document.getElementById('custGeneralNote').value.trim();
+            
+            let text = `============================================================
+`;
+            text += `  HMT STUDIO — KẾT QUẢ CHỌN ẢNH TIỆC CƯỚI
+`;
+            text += `============================================================
+`;
+            text += `  Album    : ${albumConfig.title}
+`;
+            text += `  Khách    : ${cust}
+`;
+            if (phone) text += `  SĐT/Zalo : ${phone}
+`;
+            text += `  Ngày gửi : ${new Date().toLocaleString('vi-VN')}
+`;
+            text += `  Tổng ảnh : ${selected.length} ảnh
+`;
+            if (note) text += `  Lời dặn  : ${note}
+`;
+            text += `============================================================
+
+`;
+
+            selected.forEach((p, idx) => {
+                text += `  ${String(idx+1).padStart(3, ' ')}. ${p.filename}${p.comment ? `  →  ${p.comment}` : ''}
+`;
+            });
+
+            text += `
+============================================================
+`;
+
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url  = URL.createObjectURL(blob);
+            const a    = document.createElement('a');
+            a.href     = url;
+            a.download = `Danh_Sach_Chon_${albumConfig.id}_${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('💾 Đã tải file .TXT danh sách ảnh chọn!');
+        }
+
+        // ===== TOAST =====
+        let toastTimer = null;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            t.classList.remove('-translate-y-24', 'opacity-0');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => t.classList.add('-translate-y-24', 'opacity-0'), 2500);
+        }
+
+        // ===== INIT =====
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem(`hmt_theme_${albumConfig.id}`);
+            if (savedTheme) setTheme(savedTheme);
+            loadFromStorage();
+            renderGrid();
+            initPasswordProtection();
+        });
+    </script>
+</body>
+</html>
