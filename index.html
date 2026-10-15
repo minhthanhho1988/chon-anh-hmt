@@ -2046,13 +2046,65 @@
             toastTimer = setTimeout(() => t.classList.add('-translate-y-24', 'opacity-0'), 2500);
         }
 
-        // ===== INIT =====
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem(`hmt_theme_${albumConfig.id}`);
-            if (savedTheme) setTheme(savedTheme);
+        // ===== BỘ NẠP ĐA ALBUM (MULTI-ALBUM ENGINE DYNAMIC) =====
+        async function initAlbum() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const albumParam = urlParams.get('album') || urlParams.get('id');
+
+            if (albumParam) {
+                try {
+                    const res = await fetch(`albums/${albumParam}.json`);
+                    if (res.ok) {
+                        const customData = await res.json();
+                        applyCustomAlbumData(customData);
+                        showToast(`📖 Đã nạp Album: ${customData.title || albumParam}`);
+                        return;
+                    }
+                } catch(e) {
+                    console.warn('Không tìm thấy album con, dùng album mặc định:', e);
+                }
+            }
+            // Mặc định: Dùng cấu hình album tích hợp sẵn
+            applyCustomAlbumData(albumConfig);
+        }
+
+        function applyCustomAlbumData(data) {
+            if (!data) return;
+            Object.assign(albumConfig, data);
+
+            // Cập nhật giao diện theo album tương ứng
+            document.title = `HMT Studio — ${albumConfig.title || 'Chọn Ảnh Tiệc Cưới'}`;
+            const headerTitle = document.getElementById('headerAlbumTitle');
+            if (headerTitle) headerTitle.innerText = albumConfig.title || 'Chọn Ảnh Tiệc Cưới';
+            const custInput = document.getElementById('custName');
+            if (custInput && albumConfig.clientName) custInput.value = albumConfig.clientName;
+            const quotaMaxEl = document.getElementById('quotaMax');
+            if (quotaMaxEl && albumConfig.maxPhotos) quotaMaxEl.innerText = albumConfig.maxPhotos;
+
+            // Nạp danh sách ảnh nếu có mảng photos riêng
+            if (Array.isArray(data.photos) && data.photos.length > 0) {
+                photos = data.photos.map((item, idx) => ({
+                    id: idx + 1,
+                    filename: item.filename,
+                    previewUrl: `https://lh3.googleusercontent.com/d/${item.id}=w800`,
+                    highResUrl:  `https://lh3.googleusercontent.com/d/${item.id}=s0`,
+                    downloadUrl: `https://lh3.googleusercontent.com/d/${item.id}=s0`,
+                    driveFileId: item.id,
+                    selected: false,
+                    comment: ""
+                }));
+            }
+
+            const savedTheme = localStorage.getItem(`hmt_theme_${albumConfig.id}`) || albumConfig.theme || 'tan_hon';
+            setTheme(savedTheme);
             loadFromStorage();
             renderGrid();
             initPasswordProtection();
+        }
+
+        // ===== KHỞI ĐỘNG HỆ THỐNG =====
+        window.addEventListener('DOMContentLoaded', () => {
+            initAlbum();
         });
     </script>
 </body>
