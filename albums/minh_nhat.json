@@ -1,0 +1,73 @@
+{
+  "id": "minh_nhat",
+  "title": "Tiệc Cưới Minh Nhật & Thảo Vy",
+  "clientName": "Minh Nhật - Thảo Vy",
+  "theme": "vu_quy",
+  "password": "8888",
+  "maxPhotos": 150,
+  "driveFolderUrl": "https://drive.google.com/drive/folders/1rrcaAij-IWaGfbn2nx8tYUlaVuFh-gfo?usp=sharing",
+  "googleSheetWebhook": "https://script.google.com/macros/s/AKfycbzyWUSwrdaeCMrhtWg-M7dC_Lam3l2i9RHpF5dOfYISCgjtgC1P6HGiKnEYKHGT2CZ_/exec",
+  "totalPhotos": 55,
+  "photos": [
+    {
+      "filename": "_HMT8317.jpg",
+      "id": "1trP7iOgDf46dF2UAO0cxeZG4OedoVTNq"
+    },
+    {
+      "filename": "_HMT8318.jpg",
+      "id": "1Q1riDdig6bFUsL6WVKjE3yoPY2GZgX0Y"
+    },
+    {
+      "filename": "_HMT8319.jpg",
+      "id": "12fdTmth14XnKovVSGa-KSrXAOEHJmYUM"
+    },
+    {
+      "filename": "_HMT8320.jpg",
+      "id": "1_IuPCnMWF2mU0ZykQU6UIs6cTi1Z2hJr"
+    },
+    {
+      "filename": "_HMT8321.jpg",
+      "id": "14zqglEPiUM0S-OjyttCpWBnCnl3jieJY"
+    },
+    {
+      "filename": "_HMT8322.jpg",
+      "id": "1X9SbyUMvbwOWYM25qzQt9Cf-fUY0OqUg"
+    },
+    {
+      "filename": "_HMT8323.jpg",
+      "id": "1zMAlNzxwLU4rj_iV2rMF12KFnYgCwb8C"
+    },
+    {
+      "filename": "_HMT8324.jpg",
+      "id": "1qj9_Idfs9xQoHg3h4qaHyM1Mi-tt2nzi"
+    },
+    {
+      "filename": "_HMT8325.jpg",
+      "id": "1u72bbiEV4QNNdBLKwHq3hIaNawj4K0uX"
+    },
+    {
+      "filename": "_HMT8326.jpg",
+      "id": "1O-Q0WNlEIkAleoNaii3W6jlbwuG1K8Ko"
+    },
+    {
+      "filename": "_HMT8327.jpg",
+      "id": "1nBhPl9owRHDE9XEa7_6pa5C4NuFIdBPD"
+    },
+    {
+      "filename": "_HMT8328.jpg",
+      "id": "12pGOtTbLNBERa5BrdxZqlR-UD5kqwfvS"
+    },
+    {
+      "filename": "_HMT8329.jpg",
+      "id": "1zqI8xem1KxKH6_RNMA1NTF5iyau1ATWG"
+    },
+    {
+      "filename": "_HMT8330.jpg",
+      "id": "1WgHqbcFtA51S1OSyPchgEcrPsXGI7lze"
+    },
+    {
+      "filename": "_HMT8331.jpg",
+      "id": "1FS3YBiA-lRKHzLyBKEEE0Z6tMgqEIYWR"
+    }
+  ]
+}
