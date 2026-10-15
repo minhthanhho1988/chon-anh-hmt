@@ -6,8 +6,11 @@
   "password": "1234",
   "maxPhotos": 120,
   "driveFolderUrl": "https://drive.google.com/drive/folders/1rrcaAij-IWaGfbn2nx8tYUlaVuFh-gfo?usp=sharing",
-  "googleSheetWebhook": "https://script.google.com/macros/s/AKfycbzyWUSwrdaeCMrhtWg-M7dC_Lam3l2i9RHpF5dOfYISCgjtgC1P6HGiKnEYKHGT2CZ_/exec",
+  "sourceFolder": "D:\\XUAT HINH 2026 15.4.2026\\Anh cong gautrucmetmoi",
+  "destFolder": "D:\\XUAT HINH 2026 15.4.2026\\Anh cong gautrucmetmoi\\hinh chon",
+  "publishedUrl": "https://minhthanhho1988.github.io/chon-anh-hmt/?album=thanh_cong",
   "totalPhotos": 55,
+  "createdAt": "2026-10-15 23:40:24",
   "photos": [
     {
       "filename": "_HMT8317.jpg",
