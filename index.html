@@ -1919,8 +1919,10 @@
                 alert('Vui lòng chọn ít nhất 1 ảnh trước khi gửi!');
                 return;
             }
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeId = urlParams.get('album') || urlParams.get('id') || albumConfig.albumId || albumConfig.id || 'k';
             const payload = {
-                albumId: albumConfig.id,
+                albumId: activeId,
                 albumTitle: albumConfig.title,
                 customerName: document.getElementById('custName').value.trim() || albumConfig.clientName,
                 customerPhone: document.getElementById('custPhone').value.trim(),
@@ -2087,7 +2089,20 @@
 
         function applyCustomAlbumData(data) {
             if (!data) return;
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeParam = urlParams.get('album') || urlParams.get('id');
+            if (activeParam) {
+                albumConfig.id = activeParam;
+                albumConfig.albumId = activeParam;
+            } else if (data.albumId) {
+                albumConfig.id = data.albumId;
+                albumConfig.albumId = data.albumId;
+            }
             Object.assign(albumConfig, data);
+            if (activeParam) {
+                albumConfig.id = activeParam;
+                albumConfig.albumId = activeParam;
+            }
 
             // Cập nhật giao diện theo album tương ứng
             document.title = `HMT Studio — ${albumConfig.title || 'Chọn Ảnh Tiệc Cưới'}`;

@@ -1,16 +1,11 @@
 {
-  "id": "k",
+  "action": "save_album",
+  "albumId": "k",
   "title": "Đính hôn Khánh Vy & Bình Uyên",
   "clientName": "Khánh Vy & Bình Uyên",
-  "theme": "tan_hon",
   "password": "1234",
+  "theme": "tan_hon",
   "maxPhotos": 100,
-  "driveFolderUrl": "https://drive.google.com/drive/folders/1MfDQv0Y2vru738coih4S1eXKnLjI7M0T?usp=sharing",
-  "sourceFolder": "D:/XUAT HINH 2026 15.4.2026/Dinh Hon Khanh Vy & Binh Uyen",
-  "destFolder": "D:/XUAT HINH 2026 15.4.2026/Dinh Hon Khanh Vy & Binh Uyen\\hinh chon",
-  "publishedUrl": "https://minhthanhho1988.github.io/chon-anh-hmt/?album=k",
-  "totalPhotos": 577,
-  "createdAt": "2026-10-16 00:00:39",
   "photos": [
     {
       "filename": "_HMT7644.jpg",
