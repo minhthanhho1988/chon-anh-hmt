@@ -2052,6 +2052,23 @@
             const albumParam = urlParams.get('album') || urlParams.get('id');
 
             if (albumParam) {
+                // Ưu tiên 1: Tải trực tiếp từ CSDL Đám mây Google Apps Script (Tự động 100% không cần GitHub)
+                const cloudWebhook = albumConfig.googleSheetWebhook || 'https://script.google.com/macros/s/AKfycbzyWUSwrdaeCMrhtWg-M7dC_Lam3l2i9RHpF5dOfYISCgjtgC1P6HGiKnEYKHGT2CZ_/exec';
+                try {
+                    const cloudRes = await fetch(`${cloudWebhook}?album=${albumParam}`);
+                    if (cloudRes.ok) {
+                        const cloudData = await cloudRes.json();
+                        if (cloudData && cloudData.status !== 'not_found' && cloudData.title) {
+                            applyCustomAlbumData(cloudData);
+                            showToast(`📖 Đã nạp Album: ${cloudData.title}`);
+                            return;
+                        }
+                    }
+                } catch(e) {
+                    console.warn('Chưa nạp được từ Cloud, thử file local:', e);
+                }
+
+                // Ưu tiên 2: Tải từ file albums/[id].json (dự phòng)
                 try {
                     const res = await fetch(`albums/${albumParam}.json`);
                     if (res.ok) {
