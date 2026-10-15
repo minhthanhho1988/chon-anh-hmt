@@ -6,6 +6,8 @@
     <title>HMT Studio — Ảnh Cổng Thành Công & Ngọc Ánh</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- JSZip: Nén và tải toàn bộ ảnh đã chọn chất lượng cao trực tiếp trên trình duyệt -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- Google Fonts: Be Vietnam Pro chuẩn tiếng Việt, sang trọng -->
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -178,6 +180,15 @@
 
         img {
             transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        /* Khử mờ khi zoom - bắt buộc browser render ở độ phân giải gốc cao nhất */
+        #lightboxImg {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: high-quality;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform-origin: center center;
         }
     </style>
 </head>
@@ -352,6 +363,18 @@
                         class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap">
                     <i class="fa-solid fa-comment-dots mr-1 text-amber-500 text-[10px]"></i>Lời dặn (<span id="countCommented">0</span>)
                 </button>
+                <!-- Nút Chọn tất cả / Bỏ chọn tất cả -->
+                <button id="btnToggleSelectAll" onclick="toggleSelectAll()"
+                        class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap flex items-center gap-1.5 transition-all"
+                        title="Chọn hoặc bỏ chọn toàn bộ album">
+                    <i class="fa-solid fa-check-double text-sky-600 text-[10px]"></i><span id="selectAllBtnText">Chọn tất cả</span>
+                </button>
+                <!-- Nút Tải về các ảnh đã chọn (ZIP) -->
+                <button id="btnDownloadSelected" onclick="downloadSelectedPhotos()"
+                        class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 whitespace-nowrap flex items-center gap-1.5 transition-all"
+                        title="Tải toàn bộ các ảnh đã chọn về máy">
+                    <i class="fa-solid fa-file-zipper text-emerald-600 text-[10px]"></i><span>Tải ảnh chọn (<span id="downloadSelectedCount">0</span>)</span>
+                </button>
             </div>
 
             <!-- View Mode (Fix Cắt Đầu) & Search Box -->
@@ -416,13 +439,19 @@
                     <div class="text-xs font-bold"><span id="mobileCountSelected">0</span> ảnh</div>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5">
+                <button onclick="downloadSelectedPhotos()"
+                        class="px-2.5 py-1.5 rounded-xl bg-emerald-700/90 hover:bg-emerald-600 text-xs font-semibold text-white flex items-center gap-1 active:scale-95 shadow-sm"
+                        title="Tải ZIP các ảnh đã chọn">
+                    <i class="fa-solid fa-file-zipper text-[11px] text-emerald-300"></i>
+                    <span>Tải ZIP</span>
+                </button>
                 <button onclick="setFilter('selected')"
                         class="px-2.5 py-1.5 rounded-xl bg-slate-800 text-xs font-semibold text-slate-300">
                     <i class="fa-regular fa-eye mr-1"></i>Xem lại
                 </button>
                 <button onclick="openSubmitModal()"
-                        class="t-bg px-4 py-1.5 rounded-xl text-xs font-bold active:scale-95 flex items-center gap-1">
+                        class="t-bg px-3.5 py-1.5 rounded-xl text-xs font-bold active:scale-95 flex items-center gap-1">
                     <span>Gửi Studio</span>
                     <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </button>
@@ -436,44 +465,49 @@
     <div id="lightboxModal" onclick="handleBackdropClick(event)">
         <!-- Top Bar: Nút Quay lại Home + Đếm ảnh + Thanh Zoom + Nút X -->
         <div class="flex items-center justify-between p-2.5 sm:p-4 text-white z-20 bg-slate-950/85 backdrop-blur-md border-b border-white/10 flex-shrink-0">
-            <!-- Nút Quay lại Home cực dễ bấm cho cả Mobile và Laptop -->
+            <!-- Nút Quay lại Gallery -->
             <button onclick="closeLightbox()"
-                    class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 active:scale-95 text-white text-xs font-bold transition-all border border-white/20">
+                    class="flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 active:scale-95 text-white text-xs font-bold transition-all border border-white/20 flex-shrink-0"
+                    title="Quay lại danh sách ảnh">
                 <i class="fa-solid fa-arrow-left text-sm"></i>
-                <span class="hidden xs:inline">Quay lại Gallery</span>
-                <span class="xs:hidden">Thoát</span>
+                <span class="hidden sm:inline">Gallery</span>
             </button>
 
             <!-- Tên ảnh & Bộ đếm -->
-            <div class="min-w-0 mx-2 text-center flex-1">
+            <div class="min-w-0 mx-1.5 sm:mx-2 text-center flex-1">
                 <h3 id="lightboxFilename" class="text-xs sm:text-sm font-bold truncate text-slate-100"></h3>
                 <span id="lightboxCounter" class="text-[10px] sm:text-xs text-sky-400 font-medium"></span>
             </div>
 
-            <!-- Thanh điều khiển ZOOM trực quan & Nút đóng -->
-            <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            <!-- Thanh điều khiển ZOOM trực quan & Tải gốc & Đóng -->
+            <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                 <!-- Bộ nút ZOOM IN / OUT / RESET -->
                 <div class="flex items-center bg-slate-900/90 rounded-xl p-0.5 border border-white/15">
-                    <button onclick="zoomOut(event)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-white/15 flex items-center justify-center text-xs text-slate-300 active:scale-90" title="Thu nhỏ (-)">
-                        <i class="fa-solid fa-magnifying-glass-minus"></i>
+                    <button onclick="zoomOut(event)" class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg hover:bg-white/15 flex items-center justify-center text-xs text-slate-300 active:scale-90" title="Thu nhỏ (-)">
+                        <i class="fa-solid fa-magnifying-glass-minus text-[10px] sm:text-xs"></i>
                     </button>
-                    <span id="zoomLevelText" onclick="resetZoom(event)" class="px-1.5 sm:px-2 font-mono font-bold text-[10px] sm:text-[11px] text-sky-400 select-none cursor-pointer" title="Bấm để đặt lại 100%">100%</span>
-                    <button onclick="zoomIn(event)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-white/15 flex items-center justify-center text-xs text-slate-300 active:scale-90" title="Phóng to (+)">
-                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+                    <span id="zoomLevelText" onclick="resetZoom(event)" class="px-1 sm:px-2 font-mono font-bold text-[10px] sm:text-[11px] text-sky-400 select-none cursor-pointer" title="Bấm để đặt lại 100%">100%</span>
+                    <button onclick="zoomIn(event)" class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg hover:bg-white/15 flex items-center justify-center text-xs text-slate-300 active:scale-90" title="Phóng to (+)">
+                        <i class="fa-solid fa-magnifying-glass-plus text-[10px] sm:text-xs"></i>
                     </button>
-                    <button onclick="resetZoom(event)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-white/15 flex items-center justify-center text-[10px] text-slate-400 active:scale-90 ml-0.5 border-l border-white/10" title="Đặt lại 100%">
+                    <button onclick="resetZoom(event)" class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg hover:bg-white/15 flex items-center justify-center text-[10px] text-slate-400 active:scale-90 ml-0.5 border-l border-white/10 hidden sm:flex" title="Đặt lại 100%">
                         <i class="fa-solid fa-arrows-rotate"></i>
                     </button>
                 </div>
 
+                <!-- Nút Tải gốc: Hiển thị đẹp mắt trên cả Điện thoại và Laptop -->
                 <button onclick="downloadCurrentOriginal()"
-                        class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/10" title="Tải file ảnh gốc">
-                    <i class="fa-solid fa-cloud-arrow-down"></i><span>Tải gốc</span>
+                        class="w-7 h-7 sm:w-auto flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold border border-white/20 active:scale-95 transition-all shadow-sm"
+                        title="Tải ảnh gốc 100% sắc nét về máy">
+                    <i class="fa-solid fa-cloud-arrow-down text-sky-400 text-xs sm:text-sm"></i>
+                    <span class="hidden sm:inline text-xs">Tải gốc</span>
                 </button>
+
+                <!-- Nút Đóng Lightbox -->
                 <button onclick="closeLightbox()"
-                        class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/15 hover:bg-rose-600 text-white flex items-center justify-center border border-white/20 active:scale-95 transition-all"
+                        class="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-white/15 hover:bg-rose-600 text-white flex items-center justify-center border border-white/20 active:scale-95 transition-all"
                         title="Đóng (Phím Esc)">
-                    <i class="fa-solid fa-xmark text-sm sm:text-base"></i>
+                    <i class="fa-solid fa-xmark text-xs sm:text-base"></i>
                 </button>
             </div>
         </div>
@@ -491,11 +525,15 @@
             <div id="lightboxImgWrapper" class="relative max-w-full max-h-full flex items-center justify-center pointer-events-auto overflow-visible"
                  ondblclick="toggleZoom(event)">
                 <img id="lightboxImg" src="" alt=""
-                     class="max-w-full max-h-[64vh] sm:max-h-[72vh] object-contain rounded-xl shadow-2xl transition-transform duration-150 select-none will-change-transform"
+                     class="max-w-full max-h-[64vh] sm:max-h-[72vh] object-contain rounded-xl shadow-2xl transition-transform duration-150 select-none"
                      draggable="false">
                 <div id="lightboxHeartBadge"
                      class="hidden absolute top-3 left-3 px-3 py-1 rounded-full bg-rose-600/90 text-white text-xs font-bold flex items-center gap-1.5 shadow-lg backdrop-blur-sm pointer-events-none">
                     <i class="fa-solid fa-heart"></i><span>ĐÃ CHỌN</span>
+                </div>
+                <div id="lightboxLoadingBadge"
+                     class="hidden absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-900/85 text-sky-400 text-[10px] font-semibold flex items-center gap-1.5 shadow backdrop-blur-sm pointer-events-none border border-white/15">
+                    <i class="fa-solid fa-spinner fa-spin"></i><span>Đang nạp ảnh HD...</span>
                 </div>
             </div>
 
@@ -583,12 +621,34 @@
                     <i class="fa-solid fa-paper-plane"></i>
                     <span>GỬI CHO STUDIO (Tự động lưu)</span>
                 </button>
+                <!-- Tải file ZIP ảnh đã chọn -->
+                <button onclick="downloadSelectedPhotos()"
+                        class="w-full py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold border border-emerald-200 flex items-center justify-center gap-1.5 text-xs transition-all">
+                    <i class="fa-solid fa-file-zipper text-emerald-600"></i>Tải toàn bộ ảnh đã chọn (.ZIP sắc nét)
+                </button>
                 <!-- Secondary: Download .txt -->
                 <button onclick="downloadListTxt()"
                         class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold flex items-center justify-center gap-1.5 text-xs">
                     <i class="fa-regular fa-file-lines text-slate-500"></i>Tải file .TXT (Dự phòng)
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 📦 7B. ZIP PROGRESS MODAL                                   -->
+    <!-- ============================================================ -->
+    <div id="zipProgressModal" class="hidden fixed inset-0 z-[2500] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border border-slate-100">
+            <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mx-auto mb-3">
+                <i class="fa-solid fa-file-zipper fa-bounce"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Đang đóng gói file ZIP</h3>
+            <p id="zipProgressText" class="text-xs text-slate-500 mt-1 mb-4">Đang tải ảnh chất lượng cao...</p>
+            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden mb-2">
+                <div id="zipProgressBar" class="h-full bg-emerald-500 transition-all duration-300" style="width:0%"></div>
+            </div>
+            <p class="text-[11px] text-slate-400">Ảnh giữ nguyên độ phân giải gốc 100% sắc nét</p>
         </div>
     </div>
 
@@ -1067,8 +1127,9 @@
             id: idx + 1,
             filename: item.filename,
             previewUrl: `https://lh3.googleusercontent.com/d/${item.id}=w800`,
-            highResUrl:  `https://lh3.googleusercontent.com/d/${item.id}=w2400`,
-            downloadUrl: `https://drive.google.com/uc?export=download&id=${item.id}`,
+            highResUrl:  `https://lh3.googleusercontent.com/d/${item.id}=s0`, // GỐC NGUYÊN BẢN 4024x6048 (24 Megapixels Nét Căng)
+            downloadUrl: `https://lh3.googleusercontent.com/d/${item.id}=s0`,
+            driveFileId: item.id,
             selected: false,
             comment: ""
         }));
@@ -1223,10 +1284,17 @@
                             <span class="text-[11px] font-semibold text-slate-800 truncate block">${p.filename}</span>
                             ${p.comment ? `<p class="text-[9px] text-amber-600 truncate font-medium">${p.comment}</p>` : `<span class="text-[9px] text-slate-400">Chưa ghi chú</span>`}
                         </div>
-                        <button onclick="toggleCardSelect(${p.id}, event)"
-                                class="w-8 h-8 rounded-full flex items-center justify-center transition-all flex-shrink-0 ${p.selected ? 't-text bg-sky-50 heart-pop' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'} active:scale-75">
-                            <i class="${p.selected ? 'fa-solid fa-heart text-rose-500' : 'fa-regular fa-heart'} text-sm"></i>
-                        </button>
+                        <div class="flex items-center gap-1 flex-shrink-0">
+                            <button onclick="downloadCardPhoto(${p.id}, event)"
+                                    class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-sky-600 hover:bg-sky-50 active:scale-90 transition-all"
+                                    title="Tải ảnh gốc ${p.filename}">
+                                <i class="fa-solid fa-download text-xs"></i>
+                            </button>
+                            <button onclick="toggleCardSelect(${p.id}, event)"
+                                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all flex-shrink-0 ${p.selected ? 't-text bg-sky-50 heart-pop' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'} active:scale-75">
+                                <i class="${p.selected ? 'fa-solid fa-heart text-rose-500' : 'fa-regular fa-heart'} text-sm"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -1247,6 +1315,10 @@
             document.getElementById('modalTotalSelected').innerText = `${sel} ảnh`;
             document.getElementById('quotaCurrent').innerText = sel;
             document.getElementById('quotaMax').innerText = max;
+
+            const dlCount = document.getElementById('downloadSelectedCount');
+            if (dlCount) dlCount.innerText = sel;
+            if (typeof updateSelectAllButton === 'function') updateSelectAllButton();
 
             const bar = document.getElementById('quotaProgressBar');
             const st  = document.getElementById('quotaStatusText');
@@ -1323,14 +1395,41 @@
             }
         }
 
+        let activePreloadImg = null;
         function updateLightboxView() {
             const p = photos[currentLightboxIndex];
             if (!p) return;
             resetZoom();
             document.getElementById('lightboxFilename').innerText = p.filename;
             document.getElementById('lightboxCounter').innerText = `Ảnh ${currentLightboxIndex+1} / ${photos.length}`;
-            // Tải nhanh w800 trước
-            document.getElementById('lightboxImg').src = p.previewUrl;
+            
+            const img = document.getElementById('lightboxImg');
+            const badgeLoading = document.getElementById('lightboxLoadingBadge');
+            
+            // 1. Tải nhanh previewUrl w800 để hiện ngay tức thì (0 delay)
+            img.src = p.previewUrl;
+            
+            // 2. Tải ngầm ảnh gốc s0 (Ultra HD 4024x6048) và tự động thay thế khi tải xong
+            if (badgeLoading) badgeLoading.classList.remove('hidden');
+            
+            if (activePreloadImg) {
+                activePreloadImg.onload = null;
+                activePreloadImg.onerror = null;
+            }
+            const preloader = new Image();
+            activePreloadImg = preloader;
+            const targetIdx = currentLightboxIndex;
+            preloader.onload = () => {
+                if (currentLightboxIndex === targetIdx) {
+                    img.src = p.highResUrl;
+                    if (badgeLoading) badgeLoading.classList.add('hidden');
+                }
+            };
+            preloader.onerror = () => {
+                if (badgeLoading) badgeLoading.classList.add('hidden');
+            };
+            preloader.src = p.highResUrl;
+
             document.getElementById('lightboxCommentInput').value = p.comment;
             const btn   = document.getElementById('lightboxHeartBtn');
             const badge = document.getElementById('lightboxHeartBadge');
@@ -1374,9 +1473,9 @@
                     area.classList.remove('cursor-pointer');
                     area.classList.add('cursor-grab');
                 }
-                // Tự động nâng cấp lên ảnh nét w2400 khi zoom
+                // Đảm bảo dùng s0 khi zoom để nét căng
                 const p = photos[currentLightboxIndex];
-                if (p && p.highResUrl && !img.src.includes('=w2400')) {
+                if (p && img.src !== p.highResUrl) {
                     img.src = p.highResUrl;
                 }
             } else {
@@ -1519,9 +1618,158 @@
             saveCurrentComment(input.value);
         }
 
-        function downloadCurrentOriginal() {
+        // ===== TẢI 1 ẢNH (BLOB TRỰC TIẾP VỀ BỘ NHỚ ĐIỆN THOẠI/MÁY TÍNH) =====
+        async function downloadSinglePhoto(p) {
+            if (!p) return;
+            try {
+                showToast(`⏳ Đang tải ảnh gốc ${p.filename}...`);
+                const res = await fetch(p.highResUrl);
+                if (!res.ok) throw new Error('Network error');
+                const blob = await res.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = p.filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+                showToast(`✅ Đã tải xong ${p.filename}`);
+            } catch(e) {
+                console.warn('Fallback download:', e);
+                window.open(`https://drive.google.com/uc?export=download&id=${p.driveFileId || p.id}`, '_blank');
+            }
+        }
+
+        async function downloadCurrentOriginal() {
             const p = photos[currentLightboxIndex];
-            if (p) window.open(p.downloadUrl, '_blank');
+            if (p) await downloadSinglePhoto(p);
+        }
+
+        async function downloadCardPhoto(id, e) {
+            if (e) e.stopPropagation();
+            const p = photos.find(x => x.id === id);
+            if (p) await downloadSinglePhoto(p);
+        }
+
+        // ===== CHỌN TẤT CẢ / BỎ CHỌN TẤT CẢ =====
+        function toggleSelectAll() {
+            const allSelected = photos.every(p => p.selected);
+            const newState = !allSelected;
+            photos.forEach(p => p.selected = newState);
+            saveToStorage();
+            renderGrid();
+            updateSelectAllButton();
+            showToast(newState ? `✅ Đã chọn tất cả ${photos.length} ảnh!` : `Đã bỏ chọn tất cả ảnh`);
+        }
+
+        function updateSelectAllButton() {
+            const btn = document.getElementById('btnToggleSelectAll');
+            const txt = document.getElementById('selectAllBtnText');
+            if (!btn || !txt) return;
+            const allSelected = photos.length > 0 && photos.every(p => p.selected);
+            if (allSelected) {
+                txt.innerText = 'Bỏ chọn hết';
+                btn.className = 'px-3 py-1.5 rounded-xl bg-rose-50 text-rose-700 hover:bg-rose-100 whitespace-nowrap flex items-center gap-1.5 transition-all border border-rose-200 text-xs font-semibold';
+            } else {
+                txt.innerText = 'Chọn tất cả';
+                btn.className = 'px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap flex items-center gap-1.5 transition-all text-xs font-semibold';
+            }
+        }
+
+        // ===== TẢI ZIP CÁC ẢNH ĐÃ CHỌN =====
+        let isZipping = false;
+        async function downloadSelectedPhotos() {
+            const selected = photos.filter(p => p.selected || p.comment.trim());
+            if (!selected.length) {
+                showToast('⚠️ Bạn chưa chọn ảnh nào! Hãy bấm chọn ảnh trước nhé.');
+                return;
+            }
+
+            if (selected.length === 1) {
+                await downloadSinglePhoto(selected[0]);
+                return;
+            }
+
+            if (isZipping) {
+                showToast('⏳ Đang trong quá trình nén ảnh, vui lòng đợi...');
+                return;
+            }
+
+            if (typeof JSZip === 'undefined') {
+                showToast('⚠️ Đang nạp thư viện nén, vui lòng thử lại sau 2 giây...');
+                return;
+            }
+
+            isZipping = true;
+            const zipModal = document.getElementById('zipProgressModal');
+            const zipBar = document.getElementById('zipProgressBar');
+            const zipText = document.getElementById('zipProgressText');
+            if (zipModal) zipModal.classList.remove('hidden');
+
+            try {
+                const zip = new JSZip();
+                const total = selected.length;
+                let completed = 0;
+
+                // Tải theo từng đợt 3 ảnh song song để đảm bảo tốc độ và mượt mà
+                const batchSize = 3;
+                for (let i = 0; i < total; i += batchSize) {
+                    const batch = selected.slice(i, i + batchSize);
+                    await Promise.all(batch.map(async (p) => {
+                        try {
+                            const res = await fetch(p.highResUrl);
+                            if (res.ok) {
+                                const blob = await res.blob();
+                                zip.file(p.filename, blob);
+                            }
+                        } catch (err) {
+                            console.error('Lỗi tải ảnh vào zip:', p.filename, err);
+                        }
+                        completed++;
+                        const pct = Math.round((completed / total) * 80);
+                        if (zipBar) zipBar.style.width = pct + '%';
+                        if (zipText) zipText.innerText = `Đang tải ảnh ${completed}/${total} (${pct}%)...`;
+                    }));
+                }
+
+                if (zipText) zipText.innerText = 'Đang đóng gói file ZIP chất lượng cao...';
+                if (zipBar) zipBar.style.width = '90%';
+
+                const zipBlob = await zip.generateAsync({
+                    type: 'blob',
+                    compression: 'DEFLATE',
+                    compressionOptions: { level: 4 }
+                }, metadata => {
+                    const pct = 80 + Math.round(metadata.percent * 0.2);
+                    if (zipBar) zipBar.style.width = pct + '%';
+                });
+
+                if (zipBar) zipBar.style.width = '100%';
+                if (zipText) zipText.innerText = 'Hoàn tất! Đang lưu về máy...';
+
+                const zipName = `Anh_Chon_${albumConfig.clientName || 'HMT_Studio'}.zip`.replace(/[\s\/\\?%*:|"<>]/g, '_');
+                const blobUrl = URL.createObjectURL(zipBlob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = zipName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
+
+                showToast(`🎉 Đã tải file ZIP (${(zipBlob.size / 1024 / 1024).toFixed(1)} MB)!`);
+            } catch (err) {
+                console.error('Lỗi tạo ZIP:', err);
+                showToast('⚠️ Không thể tạo ZIP. Đang mở Drive để tải trọn bộ...');
+                window.open(albumConfig.driveFolderUrl, '_blank');
+            } finally {
+                isZipping = false;
+                setTimeout(() => {
+                    if (zipModal) zipModal.classList.add('hidden');
+                    if (zipBar) zipBar.style.width = '0%';
+                }, 1200);
+            }
         }
 
         // ===== PHÍM TẮT BÀN PHÍM (ESC, MŨI TÊN, PHÍM + - 0) =====
